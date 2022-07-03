@@ -1,6 +1,7 @@
 package com.quiz.response;
 
 import com.quiz.domain.question.EssayQuestion;
+import com.quiz.domain.question.Example;
 import com.quiz.domain.question.MultipleChoiceQuestion;
 import com.quiz.domain.question.Question;
 import com.quiz.request.QuestionType;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,6 +20,7 @@ import java.util.List;
 public class QuestionResponse {
 
 
+    private Long id;
     private Integer number;
 
     private String content;
@@ -26,34 +29,32 @@ public class QuestionResponse {
 
     private String hint;
 
-    private List<String> examples;
+    private List<String> examples = new ArrayList<>();
 
     private String answer;
 
 
     public QuestionResponse(Question question) {
 
-        if (question instanceof EssayQuestion) {
-
-            EssayQuestion essayQuestion = (EssayQuestion) question;
-
-            this.number = essayQuestion.getNumber();
-            this.content = essayQuestion.getContent();
-            this.questionType = QuestionType.ESSAY;
-            this.hint = essayQuestion.getHint();
-            this.answer = essayQuestion.getAnswer();
+        this.id = question.getId();
+        this.number = question.getNumber();
+        this.content = question.getContent();
+        this.hint = question.getHint();
+        this.answer = question.getAnswer();
+        this.questionType = QuestionType.ESSAY;
 
 
-        } else {
+
+        if (question instanceof MultipleChoiceQuestion) {
 
             MultipleChoiceQuestion multipleChoiceQuestion = (MultipleChoiceQuestion) question;
 
-            this.number = multipleChoiceQuestion.getNumber();
-            this.content = multipleChoiceQuestion.getContent();
+            for (Example example : multipleChoiceQuestion.getExamples()) {
+                examples.add(example.getContent());
+            }
+
             this.questionType = QuestionType.MULTIPLE_CHOICE;
-            this.hint = multipleChoiceQuestion.getHint();
-            this.answer = multipleChoiceQuestion.getAnswer();
-            this.examples = multipleChoiceQuestion.getExamples();
+
         }
 
 

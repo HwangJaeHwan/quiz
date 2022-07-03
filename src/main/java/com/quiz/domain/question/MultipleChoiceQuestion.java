@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,31 +18,29 @@ import java.util.List;
 public class MultipleChoiceQuestion extends Question{
 
 
-    private String example1;
-
-    private String example2;
-
-    private String example3;
-
-    private String example4;
-
+    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL)
+    List<Example> examples = new ArrayList<>();
 
 
     @Builder
-    public MultipleChoiceQuestion(Quiz quiz, int number, String content, String hint, List<String> examples,String answer) {
+    public MultipleChoiceQuestion(Quiz quiz, int number, String content, String hint,String answer) {
         super(quiz, number, content, hint, answer);
 
-
-        example1 = examples.get(0);
-        example2 = examples.get(1);
-        example3 = examples.get(2);
-        example4 = examples.get(3);
-
     }
 
 
-    public List<String> getExamples(){
-        return List.of(example1, example2, example3, example4);
+    public void addExamples(List<String> examples){
+
+        for (String example : examples) {
+
+            this.examples.add(Example.builder()
+                    .content(example)
+                    .question(this)
+                    .build());
+
+        }
+
     }
+
 
 }

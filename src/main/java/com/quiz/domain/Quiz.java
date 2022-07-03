@@ -1,5 +1,6 @@
 package com.quiz.domain;
 
+import com.quiz.Entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Quiz {
+public class Quiz extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +23,20 @@ public class Quiz {
     @Lob
     private String content;
 
+    private int questionCount;
+
+
     @Builder
-    public Quiz(String title, String content) {
+    public Quiz(String title, String content,int questionCount) {
         this.title = title;
         this.content = content;
+        this.questionCount = questionCount;
     }
+
+
+    public void addQuestionCount(){
+        questionCount++;
+    }
+
+
 }

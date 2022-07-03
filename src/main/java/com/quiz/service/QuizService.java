@@ -4,11 +4,13 @@ import com.quiz.domain.Quiz;
 import com.quiz.domain.question.EssayQuestion;
 import com.quiz.domain.question.MultipleChoiceQuestion;
 import com.quiz.domain.question.Question;
+import com.quiz.exception.NoQuestionException;
 import com.quiz.exception.QuizNotFound;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.request.*;
 import com.quiz.response.QuestionResponse;
+import com.quiz.response.QuizListResponse;
 import com.quiz.response.QuizResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,49 +34,15 @@ public class QuizService {
 
         log.info("request.getTitle ={}", request.getTitle());
 
-        if (request.getEssayQuestions() == null && request.getMultipleChoiceQuestions() == null) {
-            throw new IllegalStateException("이상이상");
-        }
-
         Quiz quiz = Quiz.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
+                .questionCount(0)
                 .build();
 
         quizRepository.save(quiz);
 
-        log.info("quiz id = {}", quiz.getId());
 
-
-        if (request.getMultipleChoiceQuestions() != null) {
-
-
-            List<MultipleChoiceQuestion> questions = new ArrayList<>();
-
-            for (MultipleChoiceQuestionCreate multipleChoiceQuestion : request.getMultipleChoiceQuestions()) {
-                log.info("multiple insert");
-                questions.add(multipleChoiceQuestion.makeMultipleChoiceQuestion(quiz));
-
-            }
-
-            questionRepository.saveAll(questions);
-
-        }
-
-        if (request.getEssayQuestions() != null) {
-
-
-            List<EssayQuestion> questions = new ArrayList<>();
-
-
-            for (EssayQuestionCreate essayQuestion : request.getEssayQuestions()) {
-                log.info("essay insert");
-                questions.add(essayQuestion.makeEssayQuestion(quiz));
-            }
-
-            questionRepository.saveAll(questions);
-
-        }
 
     }
 
@@ -84,12 +52,11 @@ public class QuizService {
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFound::new);
 
 
-
-
         List<QuestionResponse> questions = questionRepository.findAllByQuiz(quizId).stream().map(QuestionResponse::new).collect(Collectors.toList());
 
 
         return QuizResponse.builder()
+                .id(quiz.getId())
                 .title(quiz.getTitle())
                 .content(quiz.getContent())
                 .questions(questions)
@@ -98,4 +65,9 @@ public class QuizService {
     }
 
 
+    public List<QuizListResponse> getList() {
+
+        return quizRepository.findAll().stream().map(QuizListResponse::new).collect(Collectors.toList());
+
+    }
 }

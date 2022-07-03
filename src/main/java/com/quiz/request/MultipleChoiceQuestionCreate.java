@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -25,7 +26,7 @@ public class MultipleChoiceQuestionCreate {
 
     private String hint;
 
-    @Size(min = 4, max = 4,message = "보기는 4개까지 생성해야합니다.")
+    @Size(min = 2, max = 4,message = "보기는 2~4개까지 생성가능합니다.")
     private List<String> examples;
 
     @NotBlank(message = "정답을 입력해주세요.")
@@ -39,7 +40,6 @@ public class MultipleChoiceQuestionCreate {
                 .content(content)
                 .hint(hint)
                 .answer(answer)
-                .examples(examples)
                 .quiz(quiz)
                 .build();
 

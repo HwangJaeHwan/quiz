@@ -36,33 +36,4 @@ public class QuestionCreate {
 
 
 
-    public Question makeQuestion(Quiz quiz){
-
-
-        if (this.getQuestionType() == QuestionType.ESSAY) {
-
-            return EssayQuestion.builder()
-                    .number(number)
-                    .content(content)
-                    .hint(hint)
-                    .answer(answer)
-                    .quiz(quiz)
-                    .build();
-
-        } else {
-
-            return MultipleChoiceQuestion.builder()
-                    .number(number)
-                    .content(content)
-                    .hint(hint)
-                    .answer(answer)
-                    .examples(examples)
-                    .quiz(quiz)
-                    .build();
-
-        }
-
-
-    }
-
 }

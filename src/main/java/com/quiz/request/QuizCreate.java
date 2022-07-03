@@ -21,10 +21,10 @@ public class QuizCreate {
     @NotBlank(message = "내용을 입력해주세요")
     private String content;
 
-    @Valid
-    private List<EssayQuestionCreate> essayQuestions;
-
-    @Valid
-    private List<MultipleChoiceQuestionCreate> multipleChoiceQuestions;
+//    @Valid
+//    private List<EssayQuestionCreate> essayQuestions;
+//
+//    @Valid
+//    private List<MultipleChoiceQuestionCreate> multipleChoiceQuestions;
 
 }

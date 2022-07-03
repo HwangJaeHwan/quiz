@@ -1,5 +1,6 @@
 package com.quiz.domain.question;
 
+import com.quiz.Entity.BaseEntity;
 import com.quiz.domain.Quiz;
 import lombok.*;
 
@@ -11,10 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @ToString
-public abstract class Question {
+public abstract class Question extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "question_id")
     private Long id;
 
     @ManyToOne
