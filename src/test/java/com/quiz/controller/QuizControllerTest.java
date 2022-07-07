@@ -127,7 +127,7 @@ class QuizControllerTest {
     }
 
     @Test
-    @DisplayName("/quizzes test(리스트 조회)")
+    @DisplayName("/quiz test(리스트 조회)")
     void 리스트조회() throws Exception {
 
 
@@ -152,7 +152,7 @@ class QuizControllerTest {
         questionService.addMultiple(2L, multiple);
 
 
-        mockMvc.perform(get("/quizzes")
+        mockMvc.perform(get("/quiz")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))

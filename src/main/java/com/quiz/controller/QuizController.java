@@ -32,8 +32,8 @@ public class QuizController {
 
     }
 
-    @GetMapping("/quizzes")
-    public List<QuizListResponse> quizzes(){
+    @GetMapping("/quiz")
+    public List<QuizListResponse> quiz(){
 
         return quizService.getList();
 
