@@ -23,18 +23,14 @@ public class SecurityConfig  {
     private final UserOauthService userOauthService;
 
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/quiz").authenticated()
                 .anyRequest().permitAll()
                 .and()
