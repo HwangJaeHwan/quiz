@@ -1,6 +1,7 @@
 package com.quiz.auth;
 
 import com.quiz.auth.oauth.GoogleUserInfo;
+import com.quiz.auth.oauth.KakaoUserInfo;
 import com.quiz.auth.oauth.NaverUserInfo;
 import com.quiz.auth.oauth.OAuth2UserInfo;
 import com.quiz.domain.User;
@@ -13,12 +14,14 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class UserOauthService extends DefaultOAuth2UserService {
 
@@ -39,7 +42,10 @@ public class UserOauthService extends DefaultOAuth2UserService {
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
             oAuth2UserInfo = new NaverUserInfo(oAuth2User.getAttribute("response"));
+        } else if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
+            oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
         }
+        log.info("kakao = {}",oAuth2UserInfo);
 
         String provider = oAuth2UserInfo.getProvider();
         String providerId = oAuth2UserInfo.getProviderId();
