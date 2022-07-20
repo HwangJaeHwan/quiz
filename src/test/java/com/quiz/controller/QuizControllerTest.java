@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @AutoConfigureMockMvc
-@Rollback(value = false)
 @SpringBootTest
 class QuizControllerTest {
 
