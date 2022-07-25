@@ -1,0 +1,34 @@
+package com.quiz.domain.comment;
+
+import com.quiz.Entity.BaseEntity;
+import com.quiz.domain.User;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+@DiscriminatorColumn
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Comment extends BaseEntity {
+
+
+    @Id
+    @Column(name = "comment_id")
+    private Long id;
+
+    private String content;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Comment(String content, User user) {
+        this.content = content;
+        this.user = user;
+    }
+}

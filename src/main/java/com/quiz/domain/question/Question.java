@@ -11,7 +11,6 @@ import javax.persistence.*;
 @DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
-@ToString
 public abstract class Question extends BaseEntity {
 
     @Id
