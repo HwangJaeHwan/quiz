@@ -2,13 +2,16 @@ package com.quiz.service;
 
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
+import com.quiz.domain.comment.Comment;
 import com.quiz.domain.comment.QuizComment;
+import com.quiz.exception.CommentNotFound;
 import com.quiz.exception.QuizNotFound;
 import com.quiz.exception.UserNotFound;
 import com.quiz.repository.CommentRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.CommentCreate;
+import com.quiz.request.CommentUpdate;
 import com.quiz.response.QuizCommentListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +48,22 @@ public class CommentService {
                         .build()
         );
 
+
+    }
+
+
+    public void updateQuizComment(Long quizCommentId, CommentUpdate commentUpdate){
+
+        Comment comment = commentRepository.findById(quizCommentId).orElseThrow(CommentNotFound::new);
+
+        comment.updateContent(commentUpdate);
+
+    }
+
+
+    public void deleteQuizComment(Long quizCommentId){
+
+        commentRepository.deleteById(quizCommentId);
 
     }
 
