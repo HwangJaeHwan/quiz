@@ -5,6 +5,7 @@ import com.quiz.domain.User;
 import com.quiz.domain.comment.Comment;
 import com.quiz.domain.comment.QuizComment;
 import com.quiz.exception.CommentNotFound;
+import com.quiz.exception.NotCommentOwnerException;
 import com.quiz.exception.QuizNotFound;
 import com.quiz.exception.UserNotFound;
 import com.quiz.repository.CommentRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -31,6 +33,21 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final QuizRepository quizRepository;
+
+
+    public boolean checkCommentOwner(Long commentId, User user) {
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFound::new);
+
+
+        if (!comment.getUser().equals(user)) {
+            return false;
+        }
+
+        return true;
+
+
+    }
 
 
 
