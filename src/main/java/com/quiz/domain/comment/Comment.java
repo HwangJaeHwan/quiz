@@ -19,6 +19,7 @@ public abstract class Comment extends BaseEntity {
 
     @Id
     @Column(name = "comment_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String content;

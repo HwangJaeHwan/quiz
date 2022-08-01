@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -84,10 +85,18 @@ public class CommentService {
 
     }
 
-    public Page<QuizCommentListResponse> quizComments(Long quizId, Pageable pageable) {
+    public List<QuizCommentListResponse> quizComments(Long quizId, Pageable pageable) {
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFound::new);
+        log.info("시발놈");
 
-        return commentRepository.findQuizComments(quiz, pageable).map(QuizCommentListResponse::new);
+        Page<QuizComment> comments = commentRepository.findQuizComments(quiz, pageable);
+
+        log.info("now page={}", comments.getNumber());
+        log.info("page size={}", comments.getContent().size());
+        log.info("page elements={}", comments.getTotalElements());
+        log.info("total page={}", comments.getTotalPages());
+
+        return comments.stream().map(QuizCommentListResponse::new).collect(Collectors.toList());
 
     }
 
