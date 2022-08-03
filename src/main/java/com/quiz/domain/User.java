@@ -1,5 +1,6 @@
 package com.quiz.domain;
 
+import com.quiz.request.PasswordUpdate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,5 +43,17 @@ public class User {
         this.role = role;
         this.provider = provider;
         this.providerId = providerId;
+    }
+
+
+    public void changePassword(String password) {
+
+        this.password = password;
+
+
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

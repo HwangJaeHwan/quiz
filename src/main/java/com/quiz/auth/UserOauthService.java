@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -34,6 +35,7 @@ public class UserOauthService extends DefaultOAuth2UserService {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
         OAuth2UserInfo oAuth2UserInfo = null;
+        Random random = new Random();
 
         log.info("attributes = {}",oAuth2User.getAttributes());
 
@@ -53,8 +55,17 @@ public class UserOauthService extends DefaultOAuth2UserService {
         String password = encoder.encode(UUID.randomUUID().toString().substring(0, 10));
         String email = oAuth2UserInfo.getEmail();
         String role = "USER";
+        String nickname = "tmp_";
+
+        int tmp = random.nextInt();
+
 
         Optional<User> optional = userRepository.findByUsername(username);
+
+        while (userRepository.findByNickname(nickname + tmp).isPresent()) {
+            tmp = random.nextInt();
+        }
+
 
         if (!optional.isPresent()) {
 
@@ -63,6 +74,7 @@ public class UserOauthService extends DefaultOAuth2UserService {
             User user = User.builder()
                     .username(username)
                     .password(password)
+                    .nickname(nickname + tmp)
                     .email(email)
                     .role(role)
                     .provider(provider)

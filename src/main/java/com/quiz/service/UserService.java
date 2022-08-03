@@ -1,8 +1,13 @@
 package com.quiz.service;
 
 import com.quiz.domain.User;
+import com.quiz.exception.NicknameDuplicateException;
+import com.quiz.exception.PasswordDiffException;
 import com.quiz.exception.PasswordNotEqualException;
+import com.quiz.exception.UserNotFound;
 import com.quiz.repository.UserRepository;
+import com.quiz.request.NicknameUpdate;
+import com.quiz.request.PasswordUpdate;
 import com.quiz.request.UserCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +31,10 @@ public class UserService {
             throw new PasswordNotEqualException();
         }
 
+        if (userRepository.findByNickname(userCreate.getNickname()).isPresent()) {
+            throw new NicknameDuplicateException();
+        }
+
 
         User user = User.builder()
                 .username(userCreate.getLoginId())
@@ -36,6 +45,38 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+
+
+    }
+
+
+    public void passwordChange(Long userId, PasswordUpdate passwordUpdate) {
+
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+
+        if (!encoder.matches(passwordUpdate.getNowPassword(), user.getPassword())) {
+            throw new PasswordDiffException();
+        }
+
+        if (!passwordUpdate.getChangePassword().equals(passwordUpdate.getPasswordCheck())) {
+            throw new PasswordNotEqualException();
+        }
+
+
+        user.changePassword(encoder.encode(passwordUpdate.getChangePassword()));
+
+
+    }
+
+    public void nicknameChange(Long userId, NicknameUpdate nicknameUpdate) {
+
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
+
+        if (userRepository.findByNickname(nicknameUpdate.getNickname()).isPresent()) {
+            throw new NicknameDuplicateException();
+        }
+
+        user.changeNickname(nicknameUpdate.getNickname());
 
 
     }
