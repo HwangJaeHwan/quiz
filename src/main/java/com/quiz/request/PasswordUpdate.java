@@ -16,4 +16,9 @@ public class PasswordUpdate {
     @NotEmpty(message = "비밀번호 확인을 입력해주세요.")
     private String passwordCheck;
 
+    public PasswordUpdate(String nowPassword, String changePassword, String passwordCheck) {
+        this.nowPassword = nowPassword;
+        this.changePassword = changePassword;
+        this.passwordCheck = passwordCheck;
+    }
 }

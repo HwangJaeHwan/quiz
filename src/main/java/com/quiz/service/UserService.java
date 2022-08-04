@@ -62,9 +62,12 @@ public class UserService {
             throw new PasswordNotEqualException();
         }
 
+        String password = encoder.encode(passwordUpdate.getChangePassword());
+        log.info("change = {}", password);
 
-        user.changePassword(encoder.encode(passwordUpdate.getChangePassword()));
+        user.changePassword(password);
 
+        log.info("change Password = {}", user.getPassword());
 
     }
 
