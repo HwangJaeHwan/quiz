@@ -1,5 +1,6 @@
 package com.quiz.controller;
 
+import com.quiz.auth.UserInfo;
 import com.quiz.domain.Quiz;
 import com.quiz.request.QuizCreate;
 import com.quiz.response.QuizListResponse;
@@ -7,6 +8,7 @@ import com.quiz.response.QuizResponse;
 import com.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,8 +22,8 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping("/quiz")
-    public void makeQuiz(@RequestBody @Valid QuizCreate request) {
-        quizService.write(request);
+    public void makeQuiz(@AuthenticationPrincipal UserInfo userInfo, @RequestBody @Valid QuizCreate request) {
+        quizService.write(userInfo.getUser().getId(), request);
     }
 
     @GetMapping("/quiz/{quizId}")

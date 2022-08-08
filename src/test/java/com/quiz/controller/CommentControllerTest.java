@@ -1,12 +1,15 @@
 package com.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quiz.controller.security.WithAuthUser;
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
 import com.quiz.domain.comment.QuizComment;
 import com.quiz.repository.CommentRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
+import com.quiz.request.CommentCreate;
+import com.quiz.request.QuizCreate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +71,7 @@ class CommentControllerTest {
         Quiz quiz = Quiz.builder()
                 .title("quizTest")
                 .content("quizTestContent")
+                .user(user)
                 .questionCount(0)
                 .build();
 
@@ -97,6 +101,51 @@ class CommentControllerTest {
 
 
     }
+
+    @Test
+    @WithAuthUser(username = "quiz")
+    @DisplayName("퀴즈 댓글 쓰기")
+    void writeQuizComment() throws Exception {
+
+
+
+        User user = User.builder()
+                .username("test")
+                .password("password")
+                .nickname("nickname")
+                .email("test@naver.com")
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
+
+
+        Quiz quiz = Quiz.builder()
+                .title("quizTest")
+                .content("quizTestContent")
+                .user(user)
+                .questionCount(0)
+                .build();
+
+        quizRepository.save(quiz);
+
+        CommentCreate commentCreate = new CommentCreate("테스트");
+
+
+        String json = objectMapper.writeValueAsString(commentCreate);
+
+        mockMvc.perform(post("/comment/quiz/{quizId}", quiz.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+
+    }
+
+
+
 
 
 

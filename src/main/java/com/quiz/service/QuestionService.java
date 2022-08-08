@@ -23,9 +23,9 @@ public class QuestionService {
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
 
-    public void addEssay(Long postId, EssayQuestionCreate request) {
+    public void addEssay(Long quizId, EssayQuestionCreate request) {
 
-        Quiz quiz = quizRepository.findById(postId).orElseThrow(QuizNotFound::new);
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFound::new);
 
         quiz.addQuestionCount();
 
@@ -37,9 +37,9 @@ public class QuestionService {
     }
 
 
-    public void addMultiple(Long postId, MultipleChoiceQuestionCreate request){
+    public void addMultiple(Long quizId, MultipleChoiceQuestionCreate request){
 
-        Quiz quiz = quizRepository.findById(postId).orElseThrow(QuizNotFound::new);
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFound::new);
 
         quiz.addQuestionCount();
 

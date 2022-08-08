@@ -1,6 +1,9 @@
 package com.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quiz.controller.security.WithAuthUser;
+import com.quiz.domain.User;
+import com.quiz.repository.UserRepository;
 import com.quiz.request.*;
 import com.quiz.service.QuestionService;
 import com.quiz.service.QuizService;
@@ -41,8 +44,11 @@ class QuizControllerTest {
 
     @Autowired
     QuestionService questionService;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
+    @WithAuthUser(username = "test")
     @DisplayName("/quiz test")
     void 등록테스트() throws Exception {
 
@@ -93,6 +99,17 @@ class QuizControllerTest {
     void 단건조회() throws Exception {
 
 
+        User user = User.builder()
+                .username("test")
+                .password("password")
+                .nickname("nickname")
+                .email("test@naver.com")
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
+
+
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
 
@@ -102,7 +119,7 @@ class QuizControllerTest {
 
         QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");
 
-        quizService.write(quizCreate);
+        quizService.write(user.getId(), quizCreate);
 
         questionService.addEssay(1L, essay);
         questionService.addMultiple(1L, multiple);
@@ -129,6 +146,16 @@ class QuizControllerTest {
     @DisplayName("/quiz test(리스트 조회)")
     void 리스트조회() throws Exception {
 
+        User user = User.builder()
+                .username("test")
+                .password("password")
+                .nickname("nickname")
+                .email("test@naver.com")
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
+
 
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
@@ -141,8 +168,8 @@ class QuizControllerTest {
         QuizCreate quizCreate2 = new QuizCreate("제목2입니다.", "내용2입니다.");
 
 
-        quizService.write(quizCreate);
-        quizService.write(quizCreate2);
+        quizService.write(user.getId(), quizCreate);
+        quizService.write(user.getId(), quizCreate2);
 
         questionService.addEssay(1L, essay);
         questionService.addMultiple(1L, multiple);

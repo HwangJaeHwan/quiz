@@ -9,14 +9,10 @@ import com.quiz.response.QuizCommentListResponse;
 import com.quiz.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,8 +38,12 @@ public class CommentController {
     }
 
     @PostMapping("/quiz/{quizId}")
-    public void writeQuizComment(@AuthenticationPrincipal UserInfo userInfo, @PathVariable Long quizId, @RequestBody CommentCreate commentCreate) {
+    public void writeQuizComment(@AuthenticationPrincipal UserInfo userInfo, @PathVariable Long quizId, @RequestBody @Valid CommentCreate commentCreate) {
 
+        log.info("info id = {}", userInfo.getUser().getId());
+        log.info("info username = {}", userInfo.getUser().getUsername());
+        log.info("info nickname = {}", userInfo.getUser().getNickname());
+        log.info("info email = {}", userInfo.getUser().getEmail());
 
         commentService.writeQuizComment(quizId, userInfo.getUser().getId(),commentCreate);
 

@@ -1,13 +1,16 @@
 package com.quiz.service;
 
 import com.quiz.domain.Quiz;
+import com.quiz.domain.User;
 import com.quiz.domain.question.EssayQuestion;
 import com.quiz.domain.question.MultipleChoiceQuestion;
 import com.quiz.domain.question.Question;
 import com.quiz.exception.NoQuestionException;
 import com.quiz.exception.QuizNotFound;
+import com.quiz.exception.UserNotFound;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
+import com.quiz.repository.UserRepository;
 import com.quiz.request.*;
 import com.quiz.response.QuestionResponse;
 import com.quiz.response.QuizListResponse;
@@ -29,19 +32,22 @@ public class QuizService {
 
     private final QuestionRepository questionRepository;
     private final QuizRepository quizRepository;
+    private final UserRepository userRepository;
 
-    public void write(QuizCreate request) {
+    public void write(Long userId, QuizCreate request) {
+
+        User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
 
         log.info("request.getTitle ={}", request.getTitle());
 
         Quiz quiz = Quiz.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
+                .user(user)
                 .questionCount(0)
                 .build();
 
         quizRepository.save(quiz);
-
 
 
     }
