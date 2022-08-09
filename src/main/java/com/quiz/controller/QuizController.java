@@ -23,6 +23,11 @@ public class QuizController {
 
     @PostMapping("/quiz")
     public void makeQuiz(@AuthenticationPrincipal UserInfo userInfo, @RequestBody @Valid QuizCreate request) {
+        log.info("id = {}",userInfo.getUser().getId());
+        log.info("username = {}",userInfo.getUser().getUsername());
+        log.info("nickname = {}", userInfo.getUser().getNickname());
+
+
         quizService.write(userInfo.getUser().getId(), request);
     }
 

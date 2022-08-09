@@ -30,8 +30,8 @@ public class SecurityConfig  {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/quiz").authenticated()
+                .antMatchers("/quiz/**").authenticated()
+                .antMatchers("/comment/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

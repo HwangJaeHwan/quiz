@@ -2,12 +2,18 @@ package com.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quiz.controller.security.WithAuthUser;
+import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
+import com.quiz.repository.QuestionRepository;
+import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.*;
 import com.quiz.service.QuestionService;
 import com.quiz.service.QuizService;
+import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+@Slf4j
 @AutoConfigureMockMvc
 @SpringBootTest
 class QuizControllerTest {
@@ -46,6 +53,21 @@ class QuizControllerTest {
     QuestionService questionService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    QuestionRepository questionRepository;
+
+    @Autowired
+    QuizRepository quizRepository;
+
+
+    @AfterEach
+    void clean(){
+        questionRepository.deleteAll();
+        quizRepository.deleteAll();
+        userRepository.deleteAll();
+
+    }
+
 
     @Test
     @WithAuthUser(username = "test")
@@ -73,6 +95,7 @@ class QuizControllerTest {
 
 
     @Test
+    @WithAuthUser(username = "test")
     @DisplayName("/quiz validation 테스트")
     void 검증테스트() throws Exception {
 
@@ -95,6 +118,7 @@ class QuizControllerTest {
 
 
     @Test
+    @WithAuthUser(username = "test")
     @DisplayName("/quiz/{quizId} test(단건 조회)")
     void 단건조회() throws Exception {
 
@@ -119,15 +143,19 @@ class QuizControllerTest {
 
         QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");
 
+
         quizService.write(user.getId(), quizCreate);
 
-        questionService.addEssay(1L, essay);
-        questionService.addMultiple(1L, multiple);
+        List<Quiz> quizList = quizRepository.findAll();
+
+
+        questionService.addEssay(quizList.get(0).getId(), essay);
+        questionService.addMultiple(quizList.get(0).getId(), multiple);
 
 
 
 
-        mockMvc.perform(get("/quiz/{quizId}", 1L)
+        mockMvc.perform(get("/quiz/{quizId}", quizList.get(0).getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("제목입니다."))
@@ -143,6 +171,7 @@ class QuizControllerTest {
     }
 
     @Test
+    @WithAuthUser(username = "test")
     @DisplayName("/quiz test(리스트 조회)")
     void 리스트조회() throws Exception {
 
@@ -171,11 +200,13 @@ class QuizControllerTest {
         quizService.write(user.getId(), quizCreate);
         quizService.write(user.getId(), quizCreate2);
 
-        questionService.addEssay(1L, essay);
-        questionService.addMultiple(1L, multiple);
+        List<Quiz> quizList = quizRepository.findAll();
 
-        questionService.addEssay(2L, essay);
-        questionService.addMultiple(2L, multiple);
+        questionService.addEssay(quizList.get(0).getId(), essay);
+        questionService.addMultiple(quizList.get(0).getId(), multiple);
+
+        questionService.addEssay(quizList.get(1).getId(), essay);
+        questionService.addMultiple(quizList.get(1).getId(), multiple);
 
 
         mockMvc.perform(get("/quiz")

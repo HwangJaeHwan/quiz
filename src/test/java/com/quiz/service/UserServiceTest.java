@@ -9,6 +9,7 @@ import com.quiz.request.NicknameUpdate;
 import com.quiz.request.PasswordUpdate;
 import com.quiz.request.UserCreate;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,13 @@ class UserServiceTest {
 
     @Autowired
     PasswordEncoder encoder;
+
+
+    @BeforeEach
+    void clean(){
+        userRepository.deleteAll();
+
+    }
 
 
     @Test

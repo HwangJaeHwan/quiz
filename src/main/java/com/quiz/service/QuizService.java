@@ -36,6 +36,7 @@ public class QuizService {
 
     public void write(Long userId, QuizCreate request) {
 
+
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
 
         log.info("request.getTitle ={}", request.getTitle());

@@ -46,6 +46,8 @@ public class UserService {
 
         userRepository.save(user);
 
+        log.info("아이디 ={}", user.getId());
+
 
     }
 

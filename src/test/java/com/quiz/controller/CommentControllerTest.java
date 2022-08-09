@@ -1,6 +1,7 @@
 package com.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quiz.auth.UserInfo;
 import com.quiz.controller.security.WithAuthUser;
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
@@ -10,12 +11,16 @@ import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.CommentCreate;
 import com.quiz.request.QuizCreate;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -29,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 class CommentControllerTest {
@@ -51,7 +56,9 @@ class CommentControllerTest {
 
 
 
+
     @Test
+    @WithAuthUser(username = "quiz")
     @DisplayName("퀴즈 댓글 리스트")
     void quizCommentList() throws Exception {
 
@@ -107,23 +114,16 @@ class CommentControllerTest {
     @DisplayName("퀴즈 댓글 쓰기")
     void writeQuizComment() throws Exception {
 
-
-
-        User user = User.builder()
-                .username("test")
-                .password("password")
-                .nickname("nickname")
-                .email("test@naver.com")
-                .role("USER")
-                .build();
-
-        userRepository.save(user);
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        UserInfo userInfo = (UserInfo) authentication.getPrincipal();
+        log.info("user name = {}",userInfo.getUser().getUsername());
 
 
         Quiz quiz = Quiz.builder()
                 .title("quizTest")
                 .content("quizTestContent")
-                .user(user)
+                .user(userInfo.getUser())
                 .questionCount(0)
                 .build();
 

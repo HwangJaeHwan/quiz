@@ -9,6 +9,7 @@ import com.quiz.repository.QuizRepository;
 import com.quiz.request.EssayQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionCreate;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,13 @@ class QuestionServiceTest {
 
     @Autowired
     QuestionService questionService;
+
+    @BeforeEach
+    void clean(){
+        questionRepository.deleteAll();
+        quizRepository.deleteAll();
+
+    }
 
 
 
