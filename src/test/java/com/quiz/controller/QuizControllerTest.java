@@ -137,8 +137,8 @@ class QuizControllerTest {
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
 
-        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate(1, "질문입니다.", "힌트없음", examples, "질문3");
-        EssayQuestionCreate essay = new EssayQuestionCreate(2, "질문2입니다.", "힌트없음", "주관식");
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("객관식 질문입니다.", "힌트없음", examples, "질문3");
+        EssayQuestionCreate essay = new EssayQuestionCreate("주관식 질문입니다.", "힌트없음", "주관식");
 
 
         QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");
@@ -161,8 +161,8 @@ class QuizControllerTest {
                 .andExpect(jsonPath("$.title").value("제목입니다."))
                 .andExpect(jsonPath("$.content").value("내용입니다."))
                 .andExpect(jsonPath("$.questions.length()").value(2))
-                .andExpect(jsonPath("$.questions[0].content").value("질문입니다."))
-                .andExpect(jsonPath("$.questions[1].content").value("질문2입니다."))
+                .andExpect(jsonPath("$.questions[0].content").value("주관식 질문입니다."))
+                .andExpect(jsonPath("$.questions[1].content").value("객관식 질문입니다."))
                 .andDo(print());
 
 
@@ -189,8 +189,8 @@ class QuizControllerTest {
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
 
-        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate(1, "질문입니다.", "힌트없음", examples, "질문3");
-        EssayQuestionCreate essay = new EssayQuestionCreate(2, "질문2입니다.", "힌트없음", "주관식");
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
 
 
         QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");
@@ -212,10 +212,10 @@ class QuizControllerTest {
         mockMvc.perform(get("/quiz")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(quizList.get(0).getId()))
                 .andExpect(jsonPath("$[0].title").value("제목입니다."))
                 .andExpect(jsonPath("$[0].questionCount").value(2))
-                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].id").value(quizList.get(1).getId()))
                 .andExpect(jsonPath("$[1].title").value("제목2입니다."))
                 .andExpect(jsonPath("$[1].questionCount").value(2))
                 .andDo(print());

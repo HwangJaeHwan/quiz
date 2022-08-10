@@ -97,8 +97,8 @@ class QuizServiceTest {
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
 
-        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate(1, "질문입니다.", "힌트없음", examples, "질문3");
-        EssayQuestionCreate essay = new EssayQuestionCreate(2, "질문2입니다.", "힌트없음", "주관식");
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
 
 
         QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");
@@ -139,8 +139,8 @@ class QuizServiceTest {
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
 
-        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate(1, "질문입니다.", "힌트없음", examples, "질문3");
-        EssayQuestionCreate essay = new EssayQuestionCreate(2, "질문2입니다.", "힌트없음", "주관식");
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
 
 
         QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");

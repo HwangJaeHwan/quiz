@@ -56,7 +56,7 @@ class QuestionServiceTest {
 
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
-        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate(1, "질문입니다.", "힌트없음", examples, "질문3");
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
 
         questionService.addMultiple(quiz.getId(), multiple);
 
@@ -81,7 +81,7 @@ class QuestionServiceTest {
 
         quizRepository.save(quiz);
 
-        EssayQuestionCreate essay = new EssayQuestionCreate(2, "질문2입니다.", "힌트없음", "주관식");
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
 
         questionService.addEssay(quiz.getId(), essay);
 

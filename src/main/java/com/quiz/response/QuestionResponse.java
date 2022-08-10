@@ -21,7 +21,6 @@ public class QuestionResponse {
 
 
     private Long id;
-    private Integer number;
 
     private String content;
 
@@ -37,7 +36,6 @@ public class QuestionResponse {
     public QuestionResponse(Question question) {
 
         this.id = question.getId();
-        this.number = question.getNumber();
         this.content = question.getContent();
         this.hint = question.getHint();
         this.answer = question.getAnswer();

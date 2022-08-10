@@ -18,8 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class MultipleChoiceQuestionCreate {
 
-    @NotNull
-    private Integer number;
 
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
@@ -36,7 +34,6 @@ public class MultipleChoiceQuestionCreate {
     public MultipleChoiceQuestion makeMultipleChoiceQuestion(Quiz quiz) {
 
         return MultipleChoiceQuestion.builder()
-                .number(number)
                 .content(content)
                 .hint(hint)
                 .answer(answer)

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question,Long> {
 
-    @Query("select q from Question q join fetch q.quiz qz where qz.id = :quizId order by q.number")
+    @Query("select q from Question q join fetch q.quiz qz where qz.id = :quizId order by q.createdTime")
     List<Question> findAllByQuiz(@Param("quizId") Long quizId);
 
 }

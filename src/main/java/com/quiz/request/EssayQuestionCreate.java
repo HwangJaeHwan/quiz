@@ -16,8 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class EssayQuestionCreate {
 
-    @NotNull
-    private Integer number;
 
     @NotBlank(message = "내용을 입력해주세요")
     private String content;
@@ -30,7 +28,6 @@ public class EssayQuestionCreate {
     public EssayQuestion makeEssayQuestion(Quiz quiz) {
 
         return EssayQuestion.builder()
-                .number(number)
                 .content(content)
                 .hint(hint)
                 .answer(answer)

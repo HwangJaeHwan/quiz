@@ -19,8 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestionCreate {
 
-    @NotNull
-    private Integer number;
 
     @NotBlank
     private String content;

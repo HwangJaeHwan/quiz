@@ -22,7 +22,7 @@ public abstract class Question extends BaseEntity {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    private int number;
+
 
     private String content;
 
@@ -30,9 +30,8 @@ public abstract class Question extends BaseEntity {
 
     private String answer;
 
-    public Question(Quiz quiz, int number, String content, String hint,String answer) {
+    public Question(Quiz quiz, String content, String hint,String answer) {
         this.quiz = quiz;
-        this.number = number;
         this.content = content;
         this.hint = hint;
         this.answer = answer;

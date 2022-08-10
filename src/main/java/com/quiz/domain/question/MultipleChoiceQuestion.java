@@ -23,8 +23,8 @@ public class MultipleChoiceQuestion extends Question{
 
 
     @Builder
-    public MultipleChoiceQuestion(Quiz quiz, int number, String content, String hint,String answer) {
-        super(quiz, number, content, hint, answer);
+    public MultipleChoiceQuestion(Quiz quiz, String content, String hint,String answer) {
+        super(quiz, content, hint, answer);
 
     }
 

@@ -12,6 +12,7 @@ import com.quiz.repository.UserRepository;
 import com.quiz.request.CommentCreate;
 import com.quiz.request.QuizCreate;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,14 @@ class CommentControllerTest {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @AfterEach
+    void clean(){
+        commentRepository.deleteAll();
+        quizRepository.deleteAll();
+        userRepository.deleteAll();
+
+    }
 
 
 
