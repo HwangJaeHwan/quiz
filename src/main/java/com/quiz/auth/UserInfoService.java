@@ -23,12 +23,7 @@ public class UserInfoService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username){
 
-        try{
-            return new UserInfo(userRepository.findByUsername(username).orElseThrow(UserNotFound::new));
-        } catch (AuthenticationException e){
-
-            throw new UserNotFound(e);
-        }
+        return new UserInfo(userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("아이디나 비밀번호가 다릅니다.")));
     }
 
 

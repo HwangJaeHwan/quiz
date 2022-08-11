@@ -1,7 +1,10 @@
 package com.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quiz.repository.UserRepository;
 import com.quiz.request.UserCreate;
+import com.quiz.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,6 +29,16 @@ class UserControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
+    @BeforeEach
+    void clean(){
+        userRepository.deleteAll();
+    }
 
 
     @Test
@@ -78,6 +91,52 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
                 .andExpect(jsonPath("$.validation.loginId").value("아이디를 입력해주세요"))
                 .andDo(print());
+
+    }
+
+
+    @Test
+    @DisplayName("로그인")
+    void 로그인() throws Exception {
+
+        UserCreate userCreate = new UserCreate("testId", "password", "password", "nickname", "email");
+
+        userService.save(userCreate);
+
+
+        mockMvc.perform(formLogin().user("testId").password("password"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(authenticated());
+
+
+
+
+
+
+    }
+
+    @Test
+    @DisplayName("로그인 실패")
+    void 로그인_실패() throws Exception {
+
+        UserCreate userCreate = new UserCreate("testId", "password", "password", "nickname", "email");
+
+        userService.save(userCreate);
+
+
+        mockMvc.perform(formLogin().user("testId").password("password2"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("아이디 또는 비밀번호가 맞지 않습니다."))
+                .andExpect(unauthenticated());
+
+
+
+
+
 
     }
 

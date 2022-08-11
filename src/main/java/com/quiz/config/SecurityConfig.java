@@ -1,5 +1,6 @@
 package com.quiz.config;
 
+import com.quiz.auth.AuthenticationHandler;
 import com.quiz.auth.UserOauthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig  {
 
     private final UserOauthService userOauthService;
+    private final AuthenticationHandler authenticationHandler;
 
 
 
@@ -28,6 +31,7 @@ public class SecurityConfig  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/quiz/**").authenticated()
@@ -37,6 +41,7 @@ public class SecurityConfig  {
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
+                .failureHandler(authenticationHandler)
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
@@ -44,6 +49,8 @@ public class SecurityConfig  {
 
         return http.build();
     }
+
+
 
 
 
