@@ -8,6 +8,7 @@ import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.request.EssayQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionCreate;
+import com.quiz.response.MultipleChoiceQuestionUpdate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,6 +66,44 @@ class QuestionServiceTest {
 
         assertThat(list.size()).isEqualTo(1L);
         assertThat(list.get(0)).isInstanceOf(MultipleChoiceQuestion.class);
+
+
+    }
+
+    @Test
+    @DisplayName("객관식 수정")
+    void 객관식_수정(){
+
+
+        Quiz quiz = Quiz.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .questionCount(0)
+                .build();
+
+        quizRepository.save(quiz);
+
+        List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
+
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
+
+        questionService.addMultiple(quiz.getId(), multiple);
+
+        List<String> changeExamples = List.of("수정1", "수정2", "수정3", "수정4");
+        Question question = questionRepository.findAll().get(0);
+        MultipleChoiceQuestion multipleChoiceQuestion = questionRepository.findMultipleQuestionById(question.getId()).get();
+
+        MultipleChoiceQuestionUpdate update = new MultipleChoiceQuestionUpdate("질문수정", "힌트수정", "정답수정", changeExamples);
+
+        questionService.updateMultiple(multipleChoiceQuestion.getId(), update);
+
+        assertThat(questionRepository.findMultipleQuestionById(question.getId()).get().getContent()).isEqualTo("질문수정");
+        assertThat(questionRepository.findMultipleQuestionById(question.getId()).get().getHint()).isEqualTo("힌트수정");
+        assertThat(questionRepository.findMultipleQuestionById(question.getId()).get().getAnswer()).isEqualTo("정답수정");
+        assertThat(questionRepository.findMultipleQuestionById(question.getId()).get().getExamples().get(0).getContent()).isEqualTo("수정1");
+        assertThat(questionRepository.findMultipleQuestionById(question.getId()).get().getExamples().get(1).getContent()).isEqualTo("수정2");
+        assertThat(questionRepository.findMultipleQuestionById(question.getId()).get().getExamples().get(2).getContent()).isEqualTo("수정3");
+        assertThat(questionRepository.findMultipleQuestionById(question.getId()).get().getExamples().get(3).getContent()).isEqualTo("수정4");
 
 
     }

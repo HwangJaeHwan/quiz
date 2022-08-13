@@ -1,6 +1,7 @@
 package com.quiz.domain.question;
 
 import com.quiz.domain.Quiz;
+import com.quiz.response.MultipleChoiceQuestionUpdate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,11 @@ public class MultipleChoiceQuestion extends Question{
         }
 
     }
+
+    public void deleteExamples(){
+        this.examples.clear();
+    }
+
 
 
 }

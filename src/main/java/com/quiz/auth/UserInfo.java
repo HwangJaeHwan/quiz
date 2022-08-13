@@ -31,7 +31,7 @@ public class UserInfo implements UserDetails, OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(() -> user.getRole());
+        collection.add(() -> "ROLE_" + user.getRole());
         return collection;
     }
 

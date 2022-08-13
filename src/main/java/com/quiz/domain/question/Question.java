@@ -2,6 +2,7 @@ package com.quiz.domain.question;
 
 import com.quiz.Entity.BaseEntity;
 import com.quiz.domain.Quiz;
+import com.quiz.response.QuestionUpdate;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,5 +36,12 @@ public abstract class Question extends BaseEntity {
         this.content = content;
         this.hint = hint;
         this.answer = answer;
+    }
+
+
+    public void update(QuestionUpdate questionUpdate) {
+        this.content = questionUpdate.getContent();
+        this.hint = questionUpdate.getHint();
+        this.answer = questionUpdate.getAnswer();
     }
 }

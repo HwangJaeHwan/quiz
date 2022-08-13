@@ -3,10 +3,7 @@ package com.quiz.request;
 import com.quiz.domain.Quiz;
 import com.quiz.domain.question.MultipleChoiceQuestion;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
