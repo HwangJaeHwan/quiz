@@ -18,7 +18,9 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
     List<Question> findAllByQuiz(@Param("quizId") Long quizId);
 
     Optional<EssayQuestion> findEssayQuestionById(Long questionId);
-    @Query("select mq from MultipleChoiceQuestion mq join fetch mq.examples where mq.id =:questionId")
+    @Query("select mq from MultipleChoiceQuestion mq where mq.id =:questionId")
     Optional<MultipleChoiceQuestion> findMultipleQuestionById(@Param("questionId") Long questionId);
+
+    Optional<MultipleChoiceQuestion> findQuestionById(Long questionId);
 
 }

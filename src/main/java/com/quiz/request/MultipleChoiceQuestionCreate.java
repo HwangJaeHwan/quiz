@@ -21,7 +21,7 @@ public class MultipleChoiceQuestionCreate {
 
     private String hint;
 
-    @Size(min = 2, max = 4,message = "보기는 2~4개까지 생성가능합니다.")
+    @Size(min = 4, max = 4,message = "보기는 4개 생성해야합니다.")
     private List<String> examples;
 
     @NotBlank(message = "정답을 입력해주세요.")
@@ -35,6 +35,10 @@ public class MultipleChoiceQuestionCreate {
                 .hint(hint)
                 .answer(answer)
                 .quiz(quiz)
+                .example1(examples.get(0))
+                .example2(examples.get(1))
+                .example3(examples.get(2))
+                .example4(examples.get(3))
                 .build();
 
 

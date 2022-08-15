@@ -10,10 +10,21 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class EssayQuestionUpdate extends QuestionUpdate {
+@NoArgsConstructor
+public class EssayQuestionUpdate{
 
+
+    @NotBlank(message = "내용을 입력해주세요")
+    private String content;
+
+    private String hint;
+
+    @NotBlank(message = "정답을 입력해주세요.")
+    private String answer;
 
     public EssayQuestionUpdate(String content, String hint, String answer) {
-        super(content, hint, answer);
+        this.content = content;
+        this.hint = hint;
+        this.answer = answer;
     }
 }

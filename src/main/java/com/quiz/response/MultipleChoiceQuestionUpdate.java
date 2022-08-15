@@ -12,15 +12,22 @@ import java.util.List;
 
 
 @Getter
-public class MultipleChoiceQuestionUpdate extends QuestionUpdate {
+@AllArgsConstructor
+public class MultipleChoiceQuestionUpdate{
 
 
-    @Size(min = 2, max = 4,message = "보기는 2~4개까지 생성가능합니다.")
+    @NotBlank(message = "내용을 입력해주세요")
+    private String content;
+
+    private String hint;
+
+    @NotBlank(message = "정답을 입력해주세요.")
+    private String answer;
+
+    @Size(min = 4, max = 4,message = "보기는 4개까지 생성가능합니다.")
     private List<String> examples;
 
 
-    public MultipleChoiceQuestionUpdate(String content, String hint, String answer, List<String> examples) {
-        super(content, hint, answer);
-        this.examples = examples;
-    }
+
+
 }

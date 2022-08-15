@@ -47,9 +47,12 @@ public class QuestionResponse {
 
             MultipleChoiceQuestion multipleChoiceQuestion = (MultipleChoiceQuestion) question;
 
-            for (Example example : multipleChoiceQuestion.getExamples()) {
-                examples.add(example.getContent());
-            }
+            examples.add(multipleChoiceQuestion.getExample1());
+            examples.add(multipleChoiceQuestion.getExample2());
+            examples.add(multipleChoiceQuestion.getExample3());
+            examples.add(multipleChoiceQuestion.getExample4());
+
+
 
             this.questionType = QuestionType.MULTIPLE_CHOICE;
 

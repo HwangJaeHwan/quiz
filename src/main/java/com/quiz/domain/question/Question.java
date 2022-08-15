@@ -2,10 +2,11 @@ package com.quiz.domain.question;
 
 import com.quiz.Entity.BaseEntity;
 import com.quiz.domain.Quiz;
-import com.quiz.response.QuestionUpdate;
 import lombok.*;
 
 import javax.persistence.*;
+
+import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter
@@ -19,11 +20,9 @@ public abstract class Question extends BaseEntity {
     @Column(name = "question_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
-
-
 
     private String content;
 
@@ -39,9 +38,16 @@ public abstract class Question extends BaseEntity {
     }
 
 
-    public void update(QuestionUpdate questionUpdate) {
-        this.content = questionUpdate.getContent();
-        this.hint = questionUpdate.getHint();
-        this.answer = questionUpdate.getAnswer();
+    void updateContent(String content) {
+        this.content = content;
     }
+
+    void updateHInt(String hint) {
+        this.hint = hint;
+    }
+
+    void updateAnswer(String answer){
+        this.answer = answer;
+    }
+
 }

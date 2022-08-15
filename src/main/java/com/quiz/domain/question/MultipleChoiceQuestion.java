@@ -7,46 +7,41 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MultipleChoiceQuestion extends Question{
 
-
-    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL)
-    List<Example> examples = new ArrayList<>();
-
+    private String example1;
+    private String example2;
+    private String example3;
+    private String example4;
 
     @Builder
-    public MultipleChoiceQuestion(Quiz quiz, String content, String hint,String answer) {
+    public MultipleChoiceQuestion(Quiz quiz, String content, String hint,String answer,
+                                  String example1,String example2,String example3,String example4) {
         super(quiz, content, hint, answer);
+        this.example1 = example1;
+        this.example2 = example2;
+        this.example3 = example3;
+        this.example4 = example4;
 
     }
 
+    public void multipleUpdate(MultipleChoiceQuestionUpdate update) {
 
-    public void addExamples(List<String> examples){
+        updateAnswer(update.getAnswer());
+        updateContent(update.getContent());
+        updateHInt(update.getHint());
 
-        for (String example : examples) {
-
-            this.examples.add(Example.builder()
-                    .content(example)
-                    .question(this)
-                    .build());
-
-        }
+        this.example1 = update.getExamples().get(0);
+        this.example2 = update.getExamples().get(1);
+        this.example3 = update.getExamples().get(2);
+        this.example4 = update.getExamples().get(3);
 
     }
-
-    public void deleteExamples(){
-        this.examples.clear();
-    }
-
 
 
 }

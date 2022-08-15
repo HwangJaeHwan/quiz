@@ -43,7 +43,7 @@ public class QuestionService {
 
         EssayQuestion essayQuestion = questionRepository.findEssayQuestionById(questionId).orElseThrow(QuestionNotFound::new);
 
-        essayQuestion.update(essayQuestionUpdate);
+        essayQuestion.essayUpdate(essayQuestionUpdate);
 
 
     }
@@ -56,7 +56,6 @@ public class QuestionService {
         quiz.addQuestionCount();
 
         MultipleChoiceQuestion multipleChoiceQuestion = request.makeMultipleChoiceQuestion(quiz);
-        multipleChoiceQuestion.addExamples(request.getExamples());
 
         questionRepository.save(multipleChoiceQuestion);
 
@@ -65,22 +64,9 @@ public class QuestionService {
     public void updateMultiple(Long questionId, MultipleChoiceQuestionUpdate multipleChoiceQuestionUpdate) {
         MultipleChoiceQuestion multipleChoiceQuestion = questionRepository.findMultipleQuestionById(questionId).orElseThrow(QuestionNotFound::new);
 
-        log.info("1번 = {}", multipleChoiceQuestion.getExamples().get(0).getContent());
-        log.info("2번 = {}", multipleChoiceQuestion.getExamples().get(1).getContent());
-        log.info("3번 = {}", multipleChoiceQuestion.getExamples().get(2).getContent());
-        log.info("4번 = {}", multipleChoiceQuestion.getExamples().get(3).getContent());
-        log.info("--------------------");
-        multipleChoiceQuestion.update(multipleChoiceQuestionUpdate);
-        log.info("--------------------");
-        multipleChoiceQuestion.deleteExamples();
-        log.info("--------------------");
-//        multipleChoiceQuestion.addExamples(multipleChoiceQuestionUpdate.getExamples());
-        log.info("--------------------");
+        multipleChoiceQuestion.multipleUpdate(multipleChoiceQuestionUpdate);
 
-//        log.info("change 1번 = {}", multipleChoiceQuestion.getExamples().get(0).getContent());
-//        log.info("change 2번 = {}", multipleChoiceQuestion.getExamples().get(1).getContent());
-//        log.info("change 3번 = {}", multipleChoiceQuestion.getExamples().get(2).getContent());
-//        log.info("change 4번 = {}", multipleChoiceQuestion.getExamples().get(3).getContent());
+
     }
 
 

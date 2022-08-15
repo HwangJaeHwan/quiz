@@ -20,9 +20,10 @@ public class EssayQuestion extends Question {
     }
 
 
-    public void essayUpdate(EssayQuestionUpdate essayQuestionUpdate) {
-        update(essayQuestionUpdate);
-
+    public void essayUpdate(EssayQuestionUpdate update) {
+        updateContent(update.getContent());
+        updateHInt(update.getHint());
+        updateAnswer(update.getAnswer());
     }
 
 }
