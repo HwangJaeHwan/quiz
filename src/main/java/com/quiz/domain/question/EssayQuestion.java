@@ -1,7 +1,7 @@
 package com.quiz.domain.question;
 
 import com.quiz.domain.Quiz;
-import com.quiz.response.EssayQuestionUpdate;
+import com.quiz.request.EssayQuestionUpdate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

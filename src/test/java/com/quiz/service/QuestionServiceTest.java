@@ -8,9 +8,9 @@ import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.request.EssayQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionCreate;
-import com.quiz.response.MultipleChoiceQuestionUpdate;
+import com.quiz.request.EssayQuestionUpdate;
+import com.quiz.request.MultipleChoiceQuestionUpdate;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -144,6 +142,41 @@ class QuestionServiceTest {
 
         assertThat(list.size()).isEqualTo(1L);
         assertThat(list.get(0)).isInstanceOf(EssayQuestion.class);
+
+
+    }
+
+
+    @Test
+    @DisplayName("주관식 수정")
+    void 주관식_수정(){
+
+        Quiz quiz = Quiz.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .questionCount(0)
+                .build();
+
+        quizRepository.save(quiz);
+
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
+
+        questionService.addEssay(quiz.getId(), essay);
+
+        EssayQuestionUpdate update = new EssayQuestionUpdate("수정입니다.", "힌트수정", "주관식수정");
+
+        List<Question> list = questionRepository.findAll();
+
+        Question question = list.get(0);
+        questionService.updateEssay(question.getId(), update);
+
+        EssayQuestion changeQuestion = questionRepository.findEssayQuestionById(question.getId()).get();
+
+        assertThat(changeQuestion.getContent()).isEqualTo("수정입니다.");
+        assertThat(changeQuestion.getHint()).isEqualTo("힌트수정");
+        assertThat(changeQuestion.getAnswer()).isEqualTo("주관식수정");
+
+
 
 
     }

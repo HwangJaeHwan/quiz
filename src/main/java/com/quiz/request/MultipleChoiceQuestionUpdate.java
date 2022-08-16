@@ -1,17 +1,20 @@
-package com.quiz.response;
-
+package com.quiz.request;
 
 import com.quiz.domain.Quiz;
-import com.quiz.domain.question.EssayQuestion;
+import com.quiz.domain.question.MultipleChoiceQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.List;
+
 
 @Getter
 @NoArgsConstructor
-public class EssayQuestionUpdate{
+@AllArgsConstructor
+public class MultipleChoiceQuestionUpdate{
 
 
     @NotBlank(message = "내용을 입력해주세요")
@@ -22,9 +25,10 @@ public class EssayQuestionUpdate{
     @NotBlank(message = "정답을 입력해주세요.")
     private String answer;
 
-    public EssayQuestionUpdate(String content, String hint, String answer) {
-        this.content = content;
-        this.hint = hint;
-        this.answer = answer;
-    }
+    @Size(min = 4, max = 4,message = "보기는 4개까지 생성가능합니다.")
+    private List<String> examples;
+
+
+
+
 }
