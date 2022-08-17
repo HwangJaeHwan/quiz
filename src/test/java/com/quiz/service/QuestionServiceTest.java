@@ -8,8 +8,8 @@ import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.request.EssayQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionCreate;
-import com.quiz.request.EssayQuestionUpdate;
-import com.quiz.request.MultipleChoiceQuestionUpdate;
+import com.quiz.request.EssayQuestionEdit;
+import com.quiz.request.MultipleChoiceQuestionEdit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -101,14 +101,14 @@ class QuestionServiceTest {
 
         Question question = questionRepository.findAll().get(0);
 
-        MultipleChoiceQuestion multipleChoiceQuestion = questionRepository.findQuestionById(question.getId()).get();
+        MultipleChoiceQuestion multipleChoiceQuestion = questionRepository.findMultipleQuestionById(question.getId()).get();
 
-        MultipleChoiceQuestionUpdate update = new MultipleChoiceQuestionUpdate("질문수정", "힌트수정", "정답수정", changeExamples);
+        MultipleChoiceQuestionEdit edit = new MultipleChoiceQuestionEdit("질문수정", "힌트수정", "정답수정", changeExamples);
 
-        questionService.updateMultiple(multipleChoiceQuestion.getId(), update);
+        questionService.editMultiple(multipleChoiceQuestion.getId(), edit);
 
 
-        MultipleChoiceQuestion changeQuestion = questionRepository.findQuestionById(question.getId()).get();
+        MultipleChoiceQuestion changeQuestion = questionRepository.findMultipleQuestionById(question.getId()).get();
 
         assertThat(changeQuestion.getContent()).isEqualTo("질문수정");
         assertThat(changeQuestion.getHint()).isEqualTo("힌트수정");
@@ -163,12 +163,12 @@ class QuestionServiceTest {
 
         questionService.addEssay(quiz.getId(), essay);
 
-        EssayQuestionUpdate update = new EssayQuestionUpdate("수정입니다.", "힌트수정", "주관식수정");
+        EssayQuestionEdit edit = new EssayQuestionEdit("수정입니다.", "힌트수정", "주관식수정");
 
         List<Question> list = questionRepository.findAll();
 
         Question question = list.get(0);
-        questionService.updateEssay(question.getId(), update);
+        questionService.editEssay(question.getId(), edit);
 
         EssayQuestion changeQuestion = questionRepository.findEssayQuestionById(question.getId()).get();
 

@@ -6,8 +6,8 @@ import com.quiz.exception.PasswordDiffException;
 import com.quiz.exception.PasswordNotEqualException;
 import com.quiz.exception.UserNotFound;
 import com.quiz.repository.UserRepository;
-import com.quiz.request.NicknameUpdate;
-import com.quiz.request.PasswordUpdate;
+import com.quiz.request.NicknameEdit;
+import com.quiz.request.PasswordEdit;
 import com.quiz.request.UserCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,19 +52,19 @@ public class UserService {
     }
 
 
-    public void passwordChange(Long userId, PasswordUpdate passwordUpdate) {
+    public void passwordChange(Long userId, PasswordEdit passwordEdit) {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
 
-        if (!encoder.matches(passwordUpdate.getNowPassword(), user.getPassword())) {
+        if (!encoder.matches(passwordEdit.getNowPassword(), user.getPassword())) {
             throw new PasswordDiffException();
         }
 
-        if (!passwordUpdate.getChangePassword().equals(passwordUpdate.getPasswordCheck())) {
+        if (!passwordEdit.getChangePassword().equals(passwordEdit.getPasswordCheck())) {
             throw new PasswordNotEqualException();
         }
 
-        String password = encoder.encode(passwordUpdate.getChangePassword());
+        String password = encoder.encode(passwordEdit.getChangePassword());
         log.info("change = {}", password);
 
         user.changePassword(password);
@@ -73,15 +73,15 @@ public class UserService {
 
     }
 
-    public void nicknameChange(Long userId, NicknameUpdate nicknameUpdate) {
+    public void nicknameChange(Long userId, NicknameEdit nicknameEdit) {
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFound::new);
 
-        if (userRepository.findByNickname(nicknameUpdate.getNickname()).isPresent()) {
+        if (userRepository.findByNickname(nicknameEdit.getNickname()).isPresent()) {
             throw new NicknameDuplicateException();
         }
 
-        user.changeNickname(nicknameUpdate.getNickname());
+        user.changeNickname(nicknameEdit.getNickname());
 
 
     }

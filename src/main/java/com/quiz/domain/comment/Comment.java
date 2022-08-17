@@ -2,7 +2,7 @@ package com.quiz.domain.comment;
 
 import com.quiz.Entity.BaseEntity;
 import com.quiz.domain.User;
-import com.quiz.request.CommentUpdate;
+import com.quiz.request.CommentEdit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +38,7 @@ public abstract class Comment extends BaseEntity {
 
 
 
-    public void updateContent(CommentUpdate commentUpdate){
-        this.content = commentUpdate.getContent();
+    public void editContent(CommentEdit commentEdit){
+        this.content = commentEdit.getContent();
     }
 }

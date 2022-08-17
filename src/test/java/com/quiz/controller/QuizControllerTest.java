@@ -225,4 +225,60 @@ class QuizControllerTest {
 
     }
 
+    @Test
+    @WithAuthUser(username = "test")
+    @DisplayName("퀴즈 수정")
+    void 수정() throws Exception {
+
+        Quiz quiz = Quiz.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .questionCount(0)
+                .build();
+
+        quizRepository.save(quiz);
+
+        QuizEdit edit = new QuizEdit("제목수정", "내용수정");
+
+        String json = objectMapper.writeValueAsString(edit);
+
+
+        mockMvc.perform(patch("/quiz/{quizId}", quiz.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @WithAuthUser(username = "test")
+    @DisplayName("퀴즈 삭제")
+    void 삭제() throws Exception {
+
+        Quiz quiz = Quiz.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .questionCount(0)
+                .build();
+        log.info("시작");
+        quizRepository.save(quiz);
+
+        List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
+
+
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
+        questionService.addEssay(quiz.getId(), essay);
+        questionService.addMultiple(quiz.getId(), multiple);
+
+
+
+
+
+        mockMvc.perform(delete("/quiz/{quizId}", quiz.getId()))
+                .andExpect(status().isOk())
+                .andDo(print());
+        log.info("끝");
+    }
+
 }

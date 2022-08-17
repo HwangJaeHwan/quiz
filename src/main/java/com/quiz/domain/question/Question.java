@@ -38,15 +38,15 @@ public abstract class Question extends BaseEntity {
     }
 
 
-    void updateContent(String content) {
+    void editContent(String content) {
         this.content = content;
     }
 
-    void updateHInt(String hint) {
+    void editHInt(String hint) {
         this.hint = hint;
     }
 
-    void updateAnswer(String answer){
+    void editAnswer(String answer){
         this.answer = answer;
     }
 

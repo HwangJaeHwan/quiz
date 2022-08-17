@@ -10,8 +10,8 @@ import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.request.EssayQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionCreate;
-import com.quiz.request.EssayQuestionUpdate;
-import com.quiz.request.MultipleChoiceQuestionUpdate;
+import com.quiz.request.EssayQuestionEdit;
+import com.quiz.request.MultipleChoiceQuestionEdit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,11 +39,11 @@ public class QuestionService {
 
     }
 
-    public void updateEssay(Long questionId, EssayQuestionUpdate update){
+    public void editEssay(Long questionId, EssayQuestionEdit edit){
 
         EssayQuestion essayQuestion = questionRepository.findEssayQuestionById(questionId).orElseThrow(QuestionNotFound::new);
 
-        essayQuestion.essayUpdate(update);
+        essayQuestion.essayEdit(edit);
 
 
     }
@@ -61,10 +61,10 @@ public class QuestionService {
 
     }
 
-    public void updateMultiple(Long questionId, MultipleChoiceQuestionUpdate update) {
+    public void editMultiple(Long questionId, MultipleChoiceQuestionEdit edit) {
         MultipleChoiceQuestion multipleChoiceQuestion = questionRepository.findMultipleQuestionById(questionId).orElseThrow(QuestionNotFound::new);
 
-        multipleChoiceQuestion.multipleUpdate(update);
+        multipleChoiceQuestion.multipleEdit(edit);
 
 
     }

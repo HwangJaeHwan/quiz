@@ -5,8 +5,8 @@ import com.quiz.exception.NicknameDuplicateException;
 import com.quiz.exception.PasswordDiffException;
 import com.quiz.exception.PasswordNotEqualException;
 import com.quiz.repository.UserRepository;
-import com.quiz.request.NicknameUpdate;
-import com.quiz.request.PasswordUpdate;
+import com.quiz.request.NicknameEdit;
+import com.quiz.request.PasswordEdit;
 import com.quiz.request.UserCreate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserServiceTest {
@@ -79,9 +77,9 @@ class UserServiceTest {
 
         userRepository.save(user);
 
-        PasswordUpdate passwordUpdate = new PasswordUpdate("password", "change", "change");
+        PasswordEdit passwordEdit = new PasswordEdit("password", "change", "change");
 
-        userService.passwordChange(user.getId(), passwordUpdate);
+        userService.passwordChange(user.getId(), passwordEdit);
 
         User changeUser = userRepository.findById(user.getId()).get();
 
@@ -106,9 +104,9 @@ class UserServiceTest {
 
         userRepository.save(user);
 
-        PasswordUpdate passwordUpdate = new PasswordUpdate("password1", "change", "change");
+        PasswordEdit passwordEdit = new PasswordEdit("password1", "change", "change");
 
-        Assertions.assertThatThrownBy(() -> userService.passwordChange(user.getId(), passwordUpdate)).isInstanceOf(PasswordDiffException.class);
+        Assertions.assertThatThrownBy(() -> userService.passwordChange(user.getId(), passwordEdit)).isInstanceOf(PasswordDiffException.class);
 
 
 
@@ -129,9 +127,9 @@ class UserServiceTest {
 
         userRepository.save(user);
 
-        PasswordUpdate passwordUpdate = new PasswordUpdate("password", "change", "changezz");
+        PasswordEdit passwordEdit = new PasswordEdit("password", "change", "changezz");
 
-        Assertions.assertThatThrownBy(() -> userService.passwordChange(user.getId(), passwordUpdate)).isInstanceOf(PasswordNotEqualException.class);
+        Assertions.assertThatThrownBy(() -> userService.passwordChange(user.getId(), passwordEdit)).isInstanceOf(PasswordNotEqualException.class);
 
 
     }
@@ -153,9 +151,9 @@ class UserServiceTest {
         userRepository.save(user);
 
 
-        NicknameUpdate nicknameUpdate = new NicknameUpdate("change");
+        NicknameEdit nicknameEdit = new NicknameEdit("change");
 
-        userService.nicknameChange(user.getId(), nicknameUpdate);
+        userService.nicknameChange(user.getId(), nicknameEdit);
 
         User changeUser = userRepository.findById(user.getId()).get();
 
@@ -182,9 +180,9 @@ class UserServiceTest {
         userRepository.save(user);
 
 
-        NicknameUpdate nicknameUpdate = new NicknameUpdate("nickname");
+        NicknameEdit nicknameEdit = new NicknameEdit("nickname");
 
-        assertThatThrownBy(() -> userService.nicknameChange(user.getId(), nicknameUpdate)).isInstanceOf(NicknameDuplicateException.class);
+        assertThatThrownBy(() -> userService.nicknameChange(user.getId(), nicknameEdit)).isInstanceOf(NicknameDuplicateException.class);
 
 
 

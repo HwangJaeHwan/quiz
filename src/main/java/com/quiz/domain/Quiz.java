@@ -1,6 +1,7 @@
 package com.quiz.domain;
 
 import com.quiz.Entity.BaseEntity;
+import com.quiz.request.QuizEdit;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,4 +45,11 @@ public class Quiz extends BaseEntity {
     }
 
 
+    public void edit(QuizEdit quizEdit) {
+
+        this.title = quizEdit.getTitle();
+        this.content = quizEdit.getContent();
+
+
+    }
 }

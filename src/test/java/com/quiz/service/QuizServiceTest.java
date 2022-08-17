@@ -166,6 +166,86 @@ class QuizServiceTest {
 
     }
 
+    @Test
+    @DisplayName("퀴즈 수정")
+    void 수정(){
+
+        User user = User.builder()
+                .username("test")
+                .password("password")
+                .nickname("nickname")
+                .email("test@naver.com")
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
+
+        Quiz quiz = Quiz.builder()
+                .title("quizTest")
+                .content("quizTestContent")
+                .questionCount(0)
+                .build();
+
+        quizRepository.save(quiz);
+
+
+        QuizEdit edit = new QuizEdit("제목 수정", "내용 수정");
+
+        quizService.edit(quiz.getId(), edit);
+
+        Quiz changeQuiz = quizRepository.findById(quiz.getId()).get();
+
+        assertThat(changeQuiz.getTitle()).isEqualTo("제목 수정");
+        assertThat(changeQuiz.getContent()).isEqualTo("내용 수정");
+
+
+    }
+
+    @Test
+    @DisplayName("퀴즈 삭제")
+    void 삭제(){
+
+
+        User user = User.builder()
+                .username("test")
+                .password("password")
+                .nickname("nickname")
+                .email("test@naver.com")
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
+
+        Quiz quiz = Quiz.builder()
+                .title("quizTest")
+                .content("quizTestContent")
+                .questionCount(0)
+                .build();
+
+        quizRepository.save(quiz);
+
+        List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
+
+
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
+
+        questionService.addMultiple(quiz.getId(), multiple);
+        questionService.addEssay(quiz.getId(), essay);
+
+
+        quizService.delete(quiz.getId());
+
+
+        assertThat(quizRepository.count()).isEqualTo(0L);
+        assertThat(questionRepository.count()).isEqualTo(0L);
+
+
+
+
+
+    }
+
 
 
 

@@ -1,6 +1,5 @@
 package com.quiz.domain;
 
-import com.quiz.request.PasswordUpdate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

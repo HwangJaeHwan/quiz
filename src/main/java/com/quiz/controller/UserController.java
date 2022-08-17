@@ -1,8 +1,8 @@
 package com.quiz.controller;
 
 import com.quiz.auth.UserInfo;
-import com.quiz.request.NicknameUpdate;
-import com.quiz.request.PasswordUpdate;
+import com.quiz.request.NicknameEdit;
+import com.quiz.request.PasswordEdit;
 import com.quiz.request.UserCreate;
 import com.quiz.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +30,16 @@ public class UserController {
     }
 
     @PostMapping("/passwordChange")
-    void passwordChange(@AuthenticationPrincipal UserInfo userInfo, @RequestBody @Valid PasswordUpdate passwordUpdate) {
+    void passwordChange(@AuthenticationPrincipal UserInfo userInfo, @RequestBody @Valid PasswordEdit passwordEdit) {
 
-        userService.passwordChange(userInfo.getUser().getId(), passwordUpdate);
+        userService.passwordChange(userInfo.getUser().getId(), passwordEdit);
 
     }
 
     @PostMapping("/nicknameChange")
-    void nicknameChange(@AuthenticationPrincipal UserInfo userInfo, @RequestBody @Valid NicknameUpdate nicknameUpdate) {
+    void nicknameChange(@AuthenticationPrincipal UserInfo userInfo, @RequestBody @Valid NicknameEdit nicknameEdit) {
 
-        userService.nicknameChange(userInfo.getUser().getId(), nicknameUpdate);
+        userService.nicknameChange(userInfo.getUser().getId(), nicknameEdit);
 
     }
 

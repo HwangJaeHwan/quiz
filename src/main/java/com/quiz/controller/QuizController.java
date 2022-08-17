@@ -3,6 +3,7 @@ package com.quiz.controller;
 import com.quiz.auth.UserInfo;
 import com.quiz.domain.Quiz;
 import com.quiz.request.QuizCreate;
+import com.quiz.request.QuizEdit;
 import com.quiz.response.QuizListResponse;
 import com.quiz.response.QuizResponse;
 import com.quiz.service.QuizService;
@@ -32,7 +33,7 @@ public class QuizController {
     }
 
     @GetMapping("/quiz/{quizId}")
-    public QuizResponse quiz(@PathVariable Long quizId){
+    public QuizResponse quizInfo(@PathVariable Long quizId){
 
 
         return quizService.quiz(quizId);
@@ -40,9 +41,23 @@ public class QuizController {
     }
 
     @GetMapping("/quiz")
-    public List<QuizListResponse> quiz(){
+    public List<QuizListResponse> quizList(){
 
         return quizService.getList();
+
+    }
+
+    @PatchMapping("/quiz/{quizId}")
+    public void edit(@PathVariable Long quizId, @RequestBody @Valid QuizEdit edit) {
+
+        quizService.edit(quizId, edit);
+
+    }
+
+    @DeleteMapping("/quiz/{quizId}")
+    public void delete(@PathVariable Long quizId){
+
+        quizService.delete(quizId);
 
     }
 

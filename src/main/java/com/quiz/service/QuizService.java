@@ -2,10 +2,6 @@ package com.quiz.service;
 
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
-import com.quiz.domain.question.EssayQuestion;
-import com.quiz.domain.question.MultipleChoiceQuestion;
-import com.quiz.domain.question.Question;
-import com.quiz.exception.NoQuestionException;
 import com.quiz.exception.QuizNotFound;
 import com.quiz.exception.UserNotFound;
 import com.quiz.repository.QuestionRepository;
@@ -20,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,13 +48,18 @@ public class QuizService {
 
     }
 
+    public void edit(Long quizId, QuizEdit quizEdit){
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFound::new);
+        quiz.edit(quizEdit);
+    }
+
 
     public QuizResponse quiz(Long quizId){
 
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFound::new);
 
 
-        List<QuestionResponse> questions = questionRepository.findAllByQuiz(quizId).stream().map(QuestionResponse::new).collect(Collectors.toList());
+        List<QuestionResponse> questions = questionRepository.findAllByQuizId(quizId).stream().map(QuestionResponse::new).collect(Collectors.toList());
 
 
         return QuizResponse.builder()
@@ -75,6 +75,14 @@ public class QuizService {
     public List<QuizListResponse> getList() {
 
         return quizRepository.findAll().stream().map(QuizListResponse::new).collect(Collectors.toList());
+
+    }
+
+    public void delete(Long quizId){
+
+        questionRepository.deleteAllByQuizId(quizId);
+
+        quizRepository.deleteById(quizId);
 
     }
 }

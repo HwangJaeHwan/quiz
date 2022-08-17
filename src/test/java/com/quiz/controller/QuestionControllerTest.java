@@ -6,9 +6,9 @@ import com.quiz.domain.question.Question;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.request.EssayQuestionCreate;
-import com.quiz.request.EssayQuestionUpdate;
+import com.quiz.request.EssayQuestionEdit;
 import com.quiz.request.MultipleChoiceQuestionCreate;
-import com.quiz.request.MultipleChoiceQuestionUpdate;
+import com.quiz.request.MultipleChoiceQuestionEdit;
 import com.quiz.service.QuestionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -95,9 +95,9 @@ class QuestionControllerTest {
 
         questionService.addMultiple(quiz.getId(), multiple);
 
-        MultipleChoiceQuestionUpdate update = new MultipleChoiceQuestionUpdate("수정입니다.", "힌트수정", "수정3", change);
+        MultipleChoiceQuestionEdit edit = new MultipleChoiceQuestionEdit("수정입니다.", "힌트수정", "수정3", change);
 
-        String json = objectMapper.writeValueAsString(update);
+        String json = objectMapper.writeValueAsString(edit);
         List<Question> list = questionRepository.findAll();
         Question question = list.get(0);
 
@@ -159,9 +159,9 @@ class QuestionControllerTest {
 
         questionService.addEssay(quiz.getId(), essay);
 
-        EssayQuestionUpdate update = new EssayQuestionUpdate("수정입니다.", "힌트수정", "수정이");
+        EssayQuestionEdit edit = new EssayQuestionEdit("수정입니다.", "힌트수정", "수정이");
 
-        String json = objectMapper.writeValueAsString(update);
+        String json = objectMapper.writeValueAsString(edit);
         List<Question> list = questionRepository.findAll();
         Question question = list.get(0);
 

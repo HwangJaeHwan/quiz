@@ -4,6 +4,7 @@ import com.quiz.domain.question.EssayQuestion;
 import com.quiz.domain.question.MultipleChoiceQuestion;
 import com.quiz.domain.question.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,12 +16,12 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question,Long> {
 
     @Query("select q from Question q join fetch q.quiz qz where qz.id = :quizId order by q.createdTime")
-    List<Question> findAllByQuiz(@Param("quizId") Long quizId);
+    List<Question> findAllByQuizId(@Param("quizId") Long quizId);
 
     Optional<EssayQuestion> findEssayQuestionById(Long questionId);
-    @Query("select mq from MultipleChoiceQuestion mq where mq.id =:questionId")
-    Optional<MultipleChoiceQuestion> findMultipleQuestionById(@Param("questionId") Long questionId);
 
-    Optional<MultipleChoiceQuestion> findQuestionById(Long questionId);
-
+    Optional<MultipleChoiceQuestion> findMultipleQuestionById(Long questionId);
+    @Modifying
+    @Query("delete from Question q where q.quiz.id = :quizId")
+    void deleteAllByQuizId(@Param("quizId") Long quizId);
 }

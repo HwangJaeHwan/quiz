@@ -7,9 +7,7 @@ import com.quiz.repository.CommentRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.CommentCreate;
-import com.quiz.request.CommentUpdate;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
+import com.quiz.request.CommentEdit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CommentServiceTest {
@@ -83,7 +80,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("퀴즈 댓글 수정")
-    void update(){
+    void edit(){
 
 
         User user = User.builder()
@@ -112,9 +109,9 @@ class CommentServiceTest {
 
         commentRepository.save(comment);
 
-        CommentUpdate commentUpdate = new CommentUpdate("update content");
+        CommentEdit commentEdit = new CommentEdit("update content");
 
-        commentService.updateQuizComment(comment.getId(), commentUpdate);
+        commentService.editQuizComment(comment.getId(), commentEdit);
 
         assertThat(commentRepository.findById(comment.getId()).get().getContent()).isEqualTo("update content");
 

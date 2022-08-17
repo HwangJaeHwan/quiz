@@ -1,7 +1,7 @@
 package com.quiz.domain.question;
 
 import com.quiz.domain.Quiz;
-import com.quiz.request.EssayQuestionUpdate;
+import com.quiz.request.EssayQuestionEdit;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,10 +20,10 @@ public class EssayQuestion extends Question {
     }
 
 
-    public void essayUpdate(EssayQuestionUpdate update) {
-        updateContent(update.getContent());
-        updateHInt(update.getHint());
-        updateAnswer(update.getAnswer());
+    public void essayEdit(EssayQuestionEdit edit) {
+        editContent(edit.getContent());
+        editHInt(edit.getHint());
+        editAnswer(edit.getAnswer());
     }
 
 }

@@ -3,7 +3,7 @@ package com.quiz.controller;
 import com.quiz.auth.UserInfo;
 import com.quiz.exception.NotCommentOwnerException;
 import com.quiz.request.CommentCreate;
-import com.quiz.request.CommentUpdate;
+import com.quiz.request.CommentEdit;
 import com.quiz.request.PageDTO;
 import com.quiz.response.QuizCommentListResponse;
 import com.quiz.service.CommentService;
@@ -50,13 +50,13 @@ public class CommentController {
     }
 
     @PutMapping("/quiz/{quizCommentId}")
-    public void updateQuizComment(@AuthenticationPrincipal UserInfo userInfo, @PathVariable Long quizCommentId, @RequestBody CommentUpdate commentUpdate) {
+    public void editQuizComment(@AuthenticationPrincipal UserInfo userInfo, @PathVariable Long quizCommentId, @RequestBody @Valid CommentEdit commentEdit) {
 
         if (!commentService.checkCommentOwner(quizCommentId, userInfo.getUser())) {
             throw new NotCommentOwnerException();
         }
 
-        commentService.updateQuizComment(quizCommentId, commentUpdate);
+        commentService.editQuizComment(quizCommentId, commentEdit);
     }
 
     @DeleteMapping("/quiz/{quizCommentId}")

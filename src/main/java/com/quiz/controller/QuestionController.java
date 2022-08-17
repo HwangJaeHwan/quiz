@@ -2,12 +2,14 @@ package com.quiz.controller;
 
 import com.quiz.request.EssayQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionCreate;
-import com.quiz.request.EssayQuestionUpdate;
-import com.quiz.request.MultipleChoiceQuestionUpdate;
+import com.quiz.request.EssayQuestionEdit;
+import com.quiz.request.MultipleChoiceQuestionEdit;
 import com.quiz.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -19,14 +21,14 @@ public class QuestionController {
 
 
     @PostMapping("/essay/{quizId}")
-    public void writeEssay(@PathVariable Long quizId , @RequestBody EssayQuestionCreate request) {
+    public void writeEssay(@PathVariable Long quizId , @RequestBody @Valid EssayQuestionCreate request) {
 
         questionService.addEssay(quizId, request);
 
     }
 
     @PostMapping("/multiple/{quizId}")
-    public void writeMultiple(@PathVariable Long quizId, @RequestBody MultipleChoiceQuestionCreate request){
+    public void writeMultiple(@PathVariable Long quizId, @RequestBody @Valid MultipleChoiceQuestionCreate request){
 
         questionService.addMultiple(quizId, request);
 
@@ -34,15 +36,15 @@ public class QuestionController {
     }
 
     @PatchMapping("/multiple/{questionId}")
-    public void updateMultiple(@PathVariable Long questionId, @RequestBody MultipleChoiceQuestionUpdate update) {
+    public void editMultiple(@PathVariable Long questionId, @RequestBody @Valid MultipleChoiceQuestionEdit edit) {
 
-        questionService.updateMultiple(questionId, update);
+        questionService.editMultiple(questionId, edit);
     }
 
     @PatchMapping("/essay/{questionId}")
-    public void updateEssay(@PathVariable Long questionId, @RequestBody EssayQuestionUpdate update) {
+    public void editEssay(@PathVariable Long questionId, @RequestBody @Valid EssayQuestionEdit edit) {
 
-        questionService.updateEssay(questionId, update);
+        questionService.editEssay(questionId, edit);
     }
 
 

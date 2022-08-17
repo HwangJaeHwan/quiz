@@ -1,7 +1,7 @@
 package com.quiz.domain.question;
 
 import com.quiz.domain.Quiz;
-import com.quiz.request.MultipleChoiceQuestionUpdate;
+import com.quiz.request.MultipleChoiceQuestionEdit;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,16 +30,16 @@ public class MultipleChoiceQuestion extends Question{
 
     }
 
-    public void multipleUpdate(MultipleChoiceQuestionUpdate update) {
+    public void multipleEdit(MultipleChoiceQuestionEdit edit) {
 
-        updateAnswer(update.getAnswer());
-        updateContent(update.getContent());
-        updateHInt(update.getHint());
+        editAnswer(edit.getAnswer());
+        editContent(edit.getContent());
+        editHInt(edit.getHint());
 
-        this.example1 = update.getExamples().get(0);
-        this.example2 = update.getExamples().get(1);
-        this.example3 = update.getExamples().get(2);
-        this.example4 = update.getExamples().get(3);
+        this.example1 = edit.getExamples().get(0);
+        this.example2 = edit.getExamples().get(1);
+        this.example3 = edit.getExamples().get(2);
+        this.example4 = edit.getExamples().get(3);
 
     }
 
