@@ -2,8 +2,11 @@ package com.quiz.controller;
 
 import com.quiz.auth.UserInfo;
 import com.quiz.domain.Quiz;
+import com.quiz.request.PageDTO;
 import com.quiz.request.QuizCreate;
 import com.quiz.request.QuizEdit;
+import com.quiz.request.SearchDTO;
+import com.quiz.response.QuizListInfo;
 import com.quiz.response.QuizListResponse;
 import com.quiz.response.QuizResponse;
 import com.quiz.service.QuizService;
@@ -41,9 +44,9 @@ public class QuizController {
     }
 
     @GetMapping("/quiz")
-    public List<QuizListResponse> quizList(){
+    public QuizListInfo quizList(PageDTO pageDTO, SearchDTO searchDTO) {
 
-        return quizService.getList();
+        return quizService.getList(pageDTO,searchDTO);
 
     }
 

@@ -9,10 +9,12 @@ import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.*;
 import com.quiz.response.QuestionResponse;
+import com.quiz.response.QuizListInfo;
 import com.quiz.response.QuizListResponse;
 import com.quiz.response.QuizResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,9 +74,17 @@ public class QuizService {
     }
 
 
-    public List<QuizListResponse> getList() {
+    public QuizListInfo getList(PageDTO pageDTO, SearchDTO searchDTO) {
 
-        return quizRepository.findAll().stream().map(QuizListResponse::new).collect(Collectors.toList());
+        Page<Quiz> quizList = quizRepository.quizList(pageDTO, searchDTO);
+
+
+        return QuizListInfo.builder()
+                .totalPage(quizList.getTotalPages())
+                .list(quizList.map(QuizListResponse::new).getContent())
+                .build();
+
+
 
     }
 

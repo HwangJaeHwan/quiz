@@ -18,15 +18,14 @@ public class PageDTO {
     }
 
     public PageDTO(int page, String sort) {
-        this.page = page;
+        this.page = Math.max(page, 1);
         this.sort = sort;
     }
 
-
-    public Pageable getPageable() {
-
-        return PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.DESC, sort));
+    public long getOffset(){
+        return (long) (Math.max(1, page) - 1) * 20;
     }
+
 
 
 }

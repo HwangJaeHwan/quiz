@@ -8,6 +8,7 @@ import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.*;
 import com.quiz.response.QuestionResponse;
+import com.quiz.response.QuizListInfo;
 import com.quiz.response.QuizListResponse;
 import com.quiz.response.QuizResponse;
 import org.assertj.core.api.Assertions;
@@ -156,11 +157,10 @@ class QuizServiceTest {
         questionService.addEssay(2L, essay);
 
 
-        List<QuizListResponse> list = quizService.getList();
+        QuizListInfo list = quizService.getList(new PageDTO(), new SearchDTO());
 
-        assertThat(list.size()).isEqualTo(2L);
-        assertThat(list.get(0).getTitle()).isEqualTo("제목입니다.");
-        assertThat(list.get(1).getTitle()).isEqualTo("제목입니다2.");
+        assertThat(list.getTotalPage()).isEqualTo(1L);
+        assertThat(list.getList().size()).isEqualTo(2L);
 
 
 

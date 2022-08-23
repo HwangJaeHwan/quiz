@@ -12,6 +12,8 @@ public class QuizListResponse {
 
     private String title;
 
+    private String nickname;
+
     private Integer questionCount;
 
     private LocalDateTime createdTime;
@@ -19,6 +21,7 @@ public class QuizListResponse {
     public QuizListResponse(Quiz quiz) {
         this.id = quiz.getId();
         this.title = quiz.getTitle();
+        this.nickname = quiz.getUser().getNickname();
         this.questionCount = quiz.getQuestionCount();
         this.createdTime = quiz.getCreatedTime();
     }

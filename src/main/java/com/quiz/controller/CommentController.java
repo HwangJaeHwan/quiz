@@ -9,6 +9,7 @@ import com.quiz.response.QuizCommentListResponse;
 import com.quiz.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +30,8 @@ public class CommentController {
 
         log.info("pageDTO =", pageDTO.getPage());
 
-        log.info("시발새기");
 
-
-        return commentService.quizComments(quizId, pageDTO.getPageable());
+        return commentService.quizComments(quizId, PageRequest.of(pageDTO.getPage() - 1, 20));
 
 
     }
