@@ -1,5 +1,6 @@
 package com.quiz.request;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +17,14 @@ public class PageDTO {
         this.page = 1;
         this.sort = "createdTime";
     }
-
+    @Builder
     public PageDTO(int page, String sort) {
-        this.page = Math.max(page, 1);
+        this.page = page;
         this.sort = sort;
+    }
+
+    public int getPage() {
+        return Math.max(1, page);
     }
 
     public long getOffset(){

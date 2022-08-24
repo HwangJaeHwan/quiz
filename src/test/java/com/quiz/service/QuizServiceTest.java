@@ -161,6 +161,8 @@ class QuizServiceTest {
 
         assertThat(list.getTotalPage()).isEqualTo(1L);
         assertThat(list.getList().size()).isEqualTo(2L);
+        assertThat(list.getList().get(0).getTitle()).isEqualTo("제목입니다2.");
+        assertThat(list.getList().get(1).getTitle()).isEqualTo("제목입니다.");
 
 
 

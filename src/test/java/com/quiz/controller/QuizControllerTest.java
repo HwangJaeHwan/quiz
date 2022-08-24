@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quiz.controller.security.WithAuthUser;
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
+import com.quiz.domain.comment.QuizComment;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -172,7 +174,7 @@ class QuizControllerTest {
 
     @Test
     @WithAuthUser(username = "test")
-    @DisplayName("/quiz test(리스트 조회)")
+    @DisplayName("리스트 조회")
     void 리스트조회() throws Exception {
 
         User user = User.builder()
@@ -186,44 +188,161 @@ class QuizControllerTest {
         userRepository.save(user);
 
 
-        List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
+        IntStream.rangeClosed(1,100).forEach(
+                i->{
+                    quizRepository.save(Quiz.builder()
+                            .title("제목" + i)
+                            .user(user)
+                            .content("내용" + i)
+                            .questionCount(0)
+                            .build());
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+        );
 
 
-        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
-        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
-
-
-        QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");
-        QuizCreate quizCreate2 = new QuizCreate("제목2입니다.", "내용2입니다.");
-
-
-        quizService.write(user.getId(), quizCreate);
-        quizService.write(user.getId(), quizCreate2);
-
-        List<Quiz> quizList = quizRepository.findAll();
-
-        questionService.addEssay(quizList.get(0).getId(), essay);
-        questionService.addMultiple(quizList.get(0).getId(), multiple);
-
-        questionService.addEssay(quizList.get(1).getId(), essay);
-        questionService.addMultiple(quizList.get(1).getId(), multiple);
-
-
-        mockMvc.perform(get("/quiz")
+        mockMvc.perform(get("/quiz?page=1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(quizList.get(0).getId()))
-                .andExpect(jsonPath("$[0].title").value("제목입니다."))
-                .andExpect(jsonPath("$[0].questionCount").value(2))
-                .andExpect(jsonPath("$[1].id").value(quizList.get(1).getId()))
-                .andExpect(jsonPath("$[1].title").value("제목2입니다."))
-                .andExpect(jsonPath("$[1].questionCount").value(2))
+                .andExpect(jsonPath("$.totalPage").value(5L))
+                .andExpect(jsonPath("$.list.length()").value(20L))
+                .andExpect(jsonPath("$.list[0].title").value("제목100"))
+                .andExpect(jsonPath("$.list[1].title").value("제목99"))
+                .andExpect(jsonPath("$.list[2].title").value("제목98"))
+                .andExpect(jsonPath("$.list[3].title").value("제목97"))
+                .andExpect(jsonPath("$.list[4].title").value("제목96"))
+                .andExpect(jsonPath("$.list[5].title").value("제목95"))
+                .andExpect(jsonPath("$.list[6].title").value("제목94"))
+                .andExpect(jsonPath("$.list[7].title").value("제목93"))
+                .andExpect(jsonPath("$.list[8].title").value("제목92"))
+                .andExpect(jsonPath("$.list[9].title").value("제목91"))
+                .andExpect(jsonPath("$.list[10].title").value("제목90"))
+
                 .andDo(print());
 
 
 
 
     }
+
+
+    @Test
+    @WithAuthUser(username = "test")
+    @DisplayName("리스트 조회 페이지 0")
+    void 리스트조회_페이지0() throws Exception {
+
+        User user = User.builder()
+                .username("test")
+                .password("password")
+                .nickname("nickname")
+                .email("test@naver.com")
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
+
+
+        IntStream.rangeClosed(1,100).forEach(
+                i->{
+                    quizRepository.save(Quiz.builder()
+                            .title("제목" + i)
+                            .user(user)
+                            .content("내용" + i)
+                            .questionCount(0)
+                            .build());
+
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+        );
+
+
+        mockMvc.perform(get("/quiz?page=0")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPage").value(5L))
+                .andExpect(jsonPath("$.list.length()").value(20L))
+                .andExpect(jsonPath("$.list[0].title").value("제목100"))
+                .andExpect(jsonPath("$.list[1].title").value("제목99"))
+                .andExpect(jsonPath("$.list[2].title").value("제목98"))
+                .andExpect(jsonPath("$.list[3].title").value("제목97"))
+                .andExpect(jsonPath("$.list[4].title").value("제목96"))
+                .andExpect(jsonPath("$.list[5].title").value("제목95"))
+                .andExpect(jsonPath("$.list[6].title").value("제목94"))
+                .andExpect(jsonPath("$.list[7].title").value("제목93"))
+                .andExpect(jsonPath("$.list[8].title").value("제목92"))
+                .andExpect(jsonPath("$.list[9].title").value("제목91"))
+                .andExpect(jsonPath("$.list[10].title").value("제목90"))
+
+                .andDo(print());
+
+
+
+
+    }
+
+
+    @Test
+    @WithAuthUser(username = "test")
+    @DisplayName("리스트 조회 페이지 + 검색")
+    void 리스트조회_페이징_검색() throws Exception {
+
+        User user = User.builder()
+                .username("test")
+                .password("password")
+                .nickname("nickname")
+                .email("test@naver.com")
+                .role("USER")
+                .build();
+
+        userRepository.save(user);
+
+
+        IntStream.rangeClosed(1,100).forEach(
+                i->{
+                    quizRepository.save(Quiz.builder()
+                            .title("제목" + i)
+                            .user(user)
+                            .content("내용" + i)
+                            .questionCount(0)
+                            .build());
+
+                }
+        );
+
+
+        mockMvc.perform(get("/quiz?page=0&type=title&content=0")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPage").value(1L))
+                .andExpect(jsonPath("$.list[0].title").value("제목100"))
+                .andExpect(jsonPath("$.list[1].title").value("제목90"))
+                .andExpect(jsonPath("$.list[2].title").value("제목80"))
+                .andExpect(jsonPath("$.list[3].title").value("제목70"))
+                .andExpect(jsonPath("$.list[4].title").value("제목60"))
+                .andExpect(jsonPath("$.list[5].title").value("제목50"))
+                .andExpect(jsonPath("$.list[6].title").value("제목40"))
+                .andExpect(jsonPath("$.list[7].title").value("제목30"))
+                .andExpect(jsonPath("$.list[8].title").value("제목20"))
+                .andExpect(jsonPath("$.list[9].title").value("제목10"))
+
+                .andDo(print());
+
+
+
+
+    }
+
+
 
     @Test
     @WithAuthUser(username = "test")
