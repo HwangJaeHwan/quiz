@@ -3,6 +3,7 @@ package com.quiz.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quiz.domain.Quiz;
 import com.quiz.domain.question.Question;
+import com.quiz.repository.CommentRepository;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.request.EssayQuestionCreate;
@@ -10,6 +11,7 @@ import com.quiz.request.EssayQuestionEdit;
 import com.quiz.request.MultipleChoiceQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionEdit;
 import com.quiz.service.QuestionService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,10 +46,15 @@ class QuestionControllerTest {
     @Autowired
     QuestionService questionService;
 
-    @BeforeEach
+    @Autowired
+    CommentRepository commentRepository;
+
+    @AfterEach
     void clean(){
         questionRepository.deleteAll();
+        commentRepository.deleteAll();
         quizRepository.deleteAll();
+
     }
 
     @Test

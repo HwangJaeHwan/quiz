@@ -5,6 +5,7 @@ import com.quiz.controller.security.WithAuthUser;
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
 import com.quiz.domain.comment.QuizComment;
+import com.quiz.repository.CommentRepository;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
@@ -59,12 +60,16 @@ class QuizControllerTest {
     QuestionRepository questionRepository;
 
     @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
     QuizRepository quizRepository;
 
 
     @AfterEach
     void clean(){
         questionRepository.deleteAll();
+        commentRepository.deleteAll();
         quizRepository.deleteAll();
         userRepository.deleteAll();
 
@@ -257,7 +262,7 @@ class QuizControllerTest {
                             .build());
 
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(1);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

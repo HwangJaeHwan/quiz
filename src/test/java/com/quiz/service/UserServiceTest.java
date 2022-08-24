@@ -4,11 +4,15 @@ import com.quiz.domain.User;
 import com.quiz.exception.NicknameDuplicateException;
 import com.quiz.exception.PasswordDiffException;
 import com.quiz.exception.PasswordNotEqualException;
+import com.quiz.repository.CommentRepository;
+import com.quiz.repository.QuestionRepository;
+import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.NicknameEdit;
 import com.quiz.request.PasswordEdit;
 import com.quiz.request.UserCreate;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,9 +35,21 @@ class UserServiceTest {
     @Autowired
     PasswordEncoder encoder;
 
+    @Autowired
+    QuestionRepository questionRepository;
 
-    @BeforeEach
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
+    QuizRepository quizRepository;
+
+
+    @AfterEach
     void clean(){
+        questionRepository.deleteAll();
+        commentRepository.deleteAll();
+        quizRepository.deleteAll();
         userRepository.deleteAll();
 
     }

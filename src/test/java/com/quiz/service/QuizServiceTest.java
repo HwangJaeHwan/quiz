@@ -3,6 +3,7 @@ package com.quiz.service;
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
 import com.quiz.domain.question.Question;
+import com.quiz.repository.CommentRepository;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
@@ -12,6 +13,7 @@ import com.quiz.response.QuizListInfo;
 import com.quiz.response.QuizListResponse;
 import com.quiz.response.QuizResponse;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,9 +44,13 @@ class QuizServiceTest {
     @Autowired
     UserRepository userRepository;
 
-    @BeforeEach
+    @Autowired
+    CommentRepository commentRepository;
+
+    @AfterEach
     void clean(){
         questionRepository.deleteAll();
+        commentRepository.deleteAll();
         quizRepository.deleteAll();
         userRepository.deleteAll();
 
@@ -123,7 +129,7 @@ class QuizServiceTest {
 
     @Test
     @DisplayName("퀴즈 리스트 조회")
-    void 퀴즈리스트(){
+    void 퀴즈리스트() throws Exception {
 
 
         User user = User.builder()
@@ -136,6 +142,22 @@ class QuizServiceTest {
 
         userRepository.save(user);
 
+        Quiz quiz1 = Quiz.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .user(user)
+                .build();
+
+        quizRepository.save(quiz1);
+        Thread.sleep(1);
+
+        Quiz quiz2 = Quiz.builder()
+                .title("제목입니다2.")
+                .content("내용입니다2.")
+                .user(user)
+                .build();
+
+        quizRepository.save(quiz2);
 
         List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
 
@@ -144,17 +166,12 @@ class QuizServiceTest {
         EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
 
 
-        QuizCreate quizCreate = new QuizCreate("제목입니다.", "내용입니다.");
-        QuizCreate quizCreate2 = new QuizCreate("제목입니다2.", "내용입니다2.");
 
-        quizService.write(user.getId(), quizCreate);
-        quizService.write(user.getId(), quizCreate2);
+        questionService.addMultiple(quiz1.getId(), multiple);
+        questionService.addEssay(quiz1.getId(), essay);
 
-        questionService.addMultiple(1L, multiple);
-        questionService.addEssay(1L, essay);
-
-        questionService.addMultiple(2L, multiple);
-        questionService.addEssay(2L, essay);
+        questionService.addMultiple(quiz2.getId(), multiple);
+        questionService.addEssay(quiz2.getId(), essay);
 
 
         QuizListInfo list = quizService.getList(new PageDTO(), new SearchDTO());

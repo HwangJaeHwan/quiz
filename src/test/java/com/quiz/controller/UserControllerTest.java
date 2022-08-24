@@ -1,9 +1,13 @@
 package com.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quiz.repository.CommentRepository;
+import com.quiz.repository.QuestionRepository;
+import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.UserCreate;
 import com.quiz.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,9 +39,23 @@ class UserControllerTest {
 
     @Autowired
     UserRepository userRepository;
-    @BeforeEach
+
+    @Autowired
+    QuestionRepository questionRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
+    QuizRepository quizRepository;
+
+    @AfterEach
     void clean(){
+        questionRepository.deleteAll();
+        commentRepository.deleteAll();
+        quizRepository.deleteAll();
         userRepository.deleteAll();
+
     }
 
 

@@ -4,10 +4,12 @@ import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
 import com.quiz.domain.comment.QuizComment;
 import com.quiz.repository.CommentRepository;
+import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.CommentCreate;
 import com.quiz.request.CommentEdit;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,14 +31,17 @@ class CommentServiceTest {
     QuizRepository quizRepository;
 
     @Autowired
+    QuestionRepository questionRepository;
+
+    @Autowired
     CommentRepository commentRepository;
 
-    @BeforeEach
+    @AfterEach
     void clean(){
-
+        questionRepository.deleteAll();
         commentRepository.deleteAll();
-        userRepository.deleteAll();
         quizRepository.deleteAll();
+        userRepository.deleteAll();
 
     }
 

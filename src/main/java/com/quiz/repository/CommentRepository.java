@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 
-    @Query(value = "select q from QuizComment q join fetch q.user where q.quiz =:quiz",
+    @Query(value = "select q from QuizComment q join fetch q.user where q.quiz =:quiz order by q.createdTime DESC",
             countQuery = "select count(q) from QuizComment q where q.quiz =:quiz")
     Page<QuizComment> findQuizComments(@Param("quiz") Quiz quiz, Pageable pageable);
 
