@@ -81,7 +81,7 @@ public class QuizService {
 
         return QuizListInfo.builder()
                 .totalPage(quizList.getTotalPages())
-                .list(quizList.map(QuizListResponse::new).getContent())
+                .quizInfo(quizList.map(QuizListResponse::new).getContent())
                 .build();
 
 

@@ -2,26 +2,19 @@ package com.quiz.service;
 
 import com.quiz.domain.Quiz;
 import com.quiz.domain.User;
-import com.quiz.domain.question.Question;
 import com.quiz.repository.CommentRepository;
 import com.quiz.repository.QuestionRepository;
 import com.quiz.repository.QuizRepository;
 import com.quiz.repository.UserRepository;
 import com.quiz.request.*;
-import com.quiz.response.QuestionResponse;
 import com.quiz.response.QuizListInfo;
-import com.quiz.response.QuizListResponse;
 import com.quiz.response.QuizResponse;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -177,9 +170,9 @@ class QuizServiceTest {
         QuizListInfo list = quizService.getList(new PageDTO(), new SearchDTO());
 
         assertThat(list.getTotalPage()).isEqualTo(1L);
-        assertThat(list.getList().size()).isEqualTo(2L);
-        assertThat(list.getList().get(0).getTitle()).isEqualTo("제목입니다2.");
-        assertThat(list.getList().get(1).getTitle()).isEqualTo("제목입니다.");
+        assertThat(list.getQuizInfo().size()).isEqualTo(2L);
+        assertThat(list.getQuizInfo().get(0).getTitle()).isEqualTo("제목입니다2.");
+        assertThat(list.getQuizInfo().get(1).getTitle()).isEqualTo("제목입니다.");
 
 
 

@@ -10,12 +10,12 @@ public class QuizListInfo {
 
     private int totalPage;
 
-    private List<QuizListResponse> list;
+    private List<QuizListResponse> quizInfo;
 
     @Builder
-    public QuizListInfo(int totalPage, List<QuizListResponse> list) {
+    public QuizListInfo(int totalPage, List<QuizListResponse> quizInfo) {
         this.totalPage = totalPage;
-        this.list = list;
+        this.quizInfo = quizInfo;
     }
 
 
