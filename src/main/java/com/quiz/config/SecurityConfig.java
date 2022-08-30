@@ -40,6 +40,7 @@ public class SecurityConfig  {
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
+                .usernameParameter("loginId")
                 .defaultSuccessUrl("/")
                 .failureHandler(authenticationHandler)
                 .and()

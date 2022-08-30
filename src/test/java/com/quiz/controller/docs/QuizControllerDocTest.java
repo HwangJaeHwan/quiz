@@ -1,4 +1,4 @@
-package com.quiz.controller;
+package com.quiz.controller.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quiz.controller.security.WithAuthUser;
@@ -11,6 +11,7 @@ import com.quiz.repository.UserRepository;
 import com.quiz.request.EssayQuestionCreate;
 import com.quiz.request.MultipleChoiceQuestionCreate;
 import com.quiz.request.QuizCreate;
+import com.quiz.request.QuizEdit;
 import com.quiz.service.QuestionService;
 import com.quiz.service.QuizService;
 import org.junit.jupiter.api.AfterEach;
@@ -43,7 +44,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -225,6 +228,69 @@ public class QuizControllerDocTest {
 
 
 
+    }
+
+
+    @Test
+    @WithAuthUser(username = "test")
+    @DisplayName("퀴즈 수정")
+    void 수정() throws Exception {
+
+        Quiz quiz = Quiz.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .questionCount(0)
+                .build();
+
+        quizRepository.save(quiz);
+
+        QuizEdit edit = new QuizEdit("제목수정", "내용수정");
+
+        String json = objectMapper.writeValueAsString(edit);
+
+
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/quiz/{quizId}", quiz.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(document("quiz-edit",
+                        pathParameters(parameterWithName("quizId").description("퀴즈 ID")
+                        )
+                ))
+                .andDo(print());
+    }
+
+    @Test
+    @WithAuthUser(username = "test")
+    @DisplayName("퀴즈 삭제")
+    void 삭제() throws Exception {
+
+        Quiz quiz = Quiz.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .questionCount(0)
+                .build();
+        quizRepository.save(quiz);
+
+        List<String> examples = List.of("질문1", "질문2", "질문3", "질문4");
+
+
+        MultipleChoiceQuestionCreate multiple = new MultipleChoiceQuestionCreate("질문입니다.", "힌트없음", examples, "질문3");
+        EssayQuestionCreate essay = new EssayQuestionCreate("질문2입니다.", "힌트없음", "주관식");
+        questionService.addEssay(quiz.getId(), essay);
+        questionService.addMultiple(quiz.getId(), multiple);
+
+
+
+
+
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/quiz/{quizId}", quiz.getId()))
+                .andExpect(status().isOk())
+                .andDo(document("quiz-delete",
+                        pathParameters(parameterWithName("quizId").description("퀴즈 ID")
+                        )
+                ))
+                .andDo(print());
     }
 
 

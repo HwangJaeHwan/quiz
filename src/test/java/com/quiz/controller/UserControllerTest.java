@@ -16,6 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
@@ -121,8 +123,12 @@ class UserControllerTest {
 
         userService.save(userCreate);
 
+        MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+        info.add("loginId", "testId");
+        info.add("password", "password");
 
-        mockMvc.perform(formLogin().user("testId").password("password"))
+
+        mockMvc.perform(post("/login").params(info))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
