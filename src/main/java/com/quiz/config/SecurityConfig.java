@@ -36,6 +36,7 @@ public class SecurityConfig  {
                 .authorizeRequests()
                 .antMatchers("/quiz/**").authenticated()
                 .antMatchers("/comment/**").authenticated()
+                .antMatchers("/question/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
