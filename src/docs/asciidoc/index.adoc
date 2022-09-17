@@ -1,0 +1,207 @@
+= 퀴즈 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== 퀴즈 단건 조회
+
+=== 요청
+
+include::{snippets}/quiz-inquiry/http-request.adoc[]
+
+include::{snippets}/quiz-inquiry/path-parameters.adoc[]
+
+
+=== 응답
+
+include::{snippets}/quiz-inquiry/http-response.adoc[]
+
+include::{snippets}/quiz-inquiry/response-fields.adoc[]
+
+
+== 글 작성
+
+=== 요청
+
+include::{snippets}/quiz-create/http-request.adoc[]
+
+include::{snippets}/quiz-create/request-fields.adoc[]
+
+
+
+=== 응답
+
+include::{snippets}/quiz-create/http-response.adoc[]
+
+
+== 퀴즈 리스트
+
+=== 요청
+
+include::{snippets}/quiz-list/http-request.adoc[]
+
+include::{snippets}/quiz-list/request-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/quiz-list/http-response.adoc[]
+
+include::{snippets}/quiz-list/response-fields.adoc[]
+
+
+== 퀴즈 수정
+
+=== 요청
+
+include::{snippets}/quiz-edit/http-request.adoc[]
+
+include::{snippets}/quiz-edit/path-parameters.adoc[]
+
+
+== 퀴즈 삭제
+
+=== 요청
+
+include::{snippets}/quiz-delete/http-request.adoc[]
+
+include::{snippets}/quiz-delete/path-parameters.adoc[]
+
+== 회원가입
+
+=== 요청
+
+include::{snippets}/user-register/http-request.adoc[]
+
+include::{snippets}/user-register/request-fields.adoc[]
+
+== 로그인
+
+=== 요청
+
+include::{snippets}/user-login/http-request.adoc[]
+
+include::{snippets}/user-login/request-parameters.adoc[]
+
+=== 네이버 로그인
+
+include::{snippets}/user-naver/http-request.adoc[]
+
+=== 카카오 로그인
+
+include::{snippets}/user-kakao/http-request.adoc[]
+
+=== 구글 로그인
+
+include::{snippets}/user-google/http-request.adoc[]
+
+== 주관식 질문 생성
+
+=== 요청
+
+include::{snippets}/essay-create/http-request.adoc[]
+
+include::{snippets}/essay-create/path-parameters.adoc[]
+
+include::{snippets}/essay-create/request-fields.adoc[]
+
+== 주관식 질문 수정
+
+=== 요청
+
+include::{snippets}/essay-edit/http-request.adoc[]
+
+include::{snippets}/essay-edit/path-parameters.adoc[]
+
+include::{snippets}/essay-edit/request-fields.adoc[]
+
+== 객관식 질문 등록
+
+=== 요청
+
+include::{snippets}/multiple-create/http-request.adoc[]
+
+include::{snippets}/multiple-create/path-parameters.adoc[]
+
+include::{snippets}/multiple-create/request-fields.adoc[]
+
+== 객관식 질문 수정
+
+=== 요청
+
+include::{snippets}/multiple-edit/http-request.adoc[]
+
+include::{snippets}/multiple-edit/path-parameters.adoc[]
+
+include::{snippets}/multiple-edit/request-fields.adoc[]
+
+== 퀴즈 댓글 리스트
+
+=== 요청
+
+include::{snippets}/quiz-comment-list/http-request.adoc[]
+
+include::{snippets}/quiz-comment-list/path-parameters.adoc[]
+
+=== 응답
+
+include::{snippets}/quiz-comment-list/response-body.adoc[]
+
+include::{snippets}/quiz-comment-list/response-fields.adoc[]
+
+
+
+
+== 퀴즈 댓글 작성
+
+=== 요청
+
+include::{snippets}/quiz-comment-create/http-request.adoc[]
+
+include::{snippets}/quiz-comment-create/path-parameters.adoc[]
+
+include::{snippets}/quiz-comment-create/request-fields.adoc[]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
